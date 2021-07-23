@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Button, Table } from 'react-bootstrap'
+import { Button, Table, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
@@ -32,9 +32,20 @@ const AdminListUsers = ({ history }) => {
             dispatch(deleteUser(id))
     }
 
+    const createProductHandler = () => {
+        history.push('/admin/user/insert')
+    }
+
     return (
         <>
-            <h3>Users</h3>
+           <Row className="align-items-center">
+                <Col>
+                    <h3>Customers</h3>
+                    <Button size="sm" variant="outline-primary" onClick={createProductHandler}>
+                        <i className="fas fa-plus"> Create customers</i>
+                    </Button>
+                </Col>
+            </Row>
             {
                 loading ? <h5><Loader /></h5> : error ? <h5><Message variant="danger">{error}</Message></h5> : (
 

@@ -6,6 +6,8 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listProducts, deleteProduct, createProduct } from '../actions/productActions.js'
 import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
+import { listCategories } from '../actions/categoryActions.js'
+import { listBrands } from '../actions/brandActions.js'
 
 
 const AdminListProducts = ({ history, match }) => {
@@ -22,15 +24,18 @@ const AdminListProducts = ({ history, match }) => {
 
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
+    
 
     useEffect(() => {
         dispatch({ type: PRODUCT_CREATE_RESET })
-
+        
         if (userInfo && userInfo.roles[0] === 'admin') {
             if (successCreate) {
                 history.push(`/admin/product/${createdProduct._id}/edit`)
             } else {
                 dispatch(listProducts())
+                dispatch(listCategories())
+                dispatch(listBrands())
             }
         }
         else {
@@ -46,7 +51,8 @@ const AdminListProducts = ({ history, match }) => {
     }
 
     const createProductHandler = () => {
-        dispatch(createProduct())
+        //dispatch(createProduct())
+        history.push('/admin/product/insert')
     }
 
     return (

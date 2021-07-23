@@ -47,7 +47,7 @@ const Header = () => {
               <NavDropdown title="Categories" id="basic-nav-dropdown">
               {
                 loading ? <h5><Loader /></h5> : error ? <h5><Message variant="danger">{error}</Message></h5> : 
-                  categories.data.map(item => (
+                  categories.map(item => (
                     <LinkContainer to={`/products/category/${item.category_id}`}>
                       <NavDropdown.Item key={item.category_id}>{item.categoryName}</NavDropdown.Item>
                     </LinkContainer>
@@ -109,9 +109,9 @@ const Header = () => {
                   <LinkContainer to="/admin/productlist">
                     <NavDropdown.Item>Products</NavDropdown.Item>
                   </LinkContainer>
-                  <LinkContainer to="/admin/orderlist">
+                  {/* <LinkContainer to="/admin/orderlist">
                     <NavDropdown.Item>Orders</NavDropdown.Item>
-                  </LinkContainer>
+                  </LinkContainer> */}
                 </NavDropdown>
               )}
             </Nav>
