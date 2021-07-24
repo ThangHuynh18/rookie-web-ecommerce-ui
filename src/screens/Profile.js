@@ -48,15 +48,20 @@ const Profile = ({ history }) => {
     // }, [dispatch, history, userInfo, user])
 
     useEffect(() => {
-        if (!user) {
-          dispatch({ type: USER_UPDATE_PROFILE_RESET });
-          dispatch(getUserDetails(userInfo.id));
-          dispatch(getMyListOrder(userInfo.id))
-        } else {
-          setUsername(user.data.userName);
-          setEmail(user.data.userEmail);
+        if (!userInfo) {
+            history.push('/login')
+        }else{
+
+            if (!user) {
+              dispatch({ type: USER_UPDATE_PROFILE_RESET });
+              dispatch(getUserDetails(userInfo.id));
+              dispatch(getMyListOrder(userInfo.id))
+            } else {
+              setUsername(user.data.userName);
+              setEmail(user.data.userEmail);
+            }
         }
-      }, [dispatch, userInfo.id, user]);
+      }, [dispatch, history, userInfo, user]);
 
     const submitHandler = (e) => {
         e.preventDefault()

@@ -9,6 +9,7 @@ import { createProduct } from '../actions/productActions'
 import { listCategories } from '../actions/categoryActions.js'
 import { listBrands } from '../actions/brandActions.js'
 import { logDOM } from '@testing-library/react'
+import axios from 'axios'
 
 const AdminInsertProduct = ({ location, history }) => {
     const [name, setName] = useState('')
@@ -22,7 +23,7 @@ const AdminInsertProduct = ({ location, history }) => {
     const [message, setMessage] = useState(null)
 
     const dispatch = useDispatch()
-    
+    const { userInfo } = useSelector(state => state.userLogin)
     const { categories, error: errorCate, loading: loadingCate }  = useSelector(state => state.categoryList)
 
     const { brands, errorBrand, loadingBrand }  = useSelector(state => state.brandList)
@@ -33,15 +34,40 @@ const AdminInsertProduct = ({ location, history }) => {
     }, [dispatch])
 
     const productCreate = useSelector(state => state.productCreate)
-    const { loading, error, productInfo } = productCreate
+    const { loading, error, productInfo, success: successCreate } = productCreate
 
     const redirect = location.search ? location.search.split('=')[1] : '/'
 
     useEffect(() => {
-        if (productInfo) {
-            history.push(redirect)
+        if (successCreate) {
+            history.push('/admin/productlist')
         }
-    }, [history, productInfo, redirect])
+    }, [history, successCreate])
+
+    const onChange = async (e) => {
+        e.preventDefault()
+        const file = e.target.files[0]
+        console.log(file);
+        // if (!file) {
+        //     return alert.error('File not exist!')
+        // }
+        // if (file.type !== 'image/jpeg' && file.type !== 'image/jpg' && file.type !== 'image/png') {
+        //     return alert.error('File format is incorrect!')
+        // }
+        // if (file.size > 1024 * 1024 * 5) {
+        //     return alert.error('File too large!')
+        // }
+        let formData = new FormData()
+        formData.append('file', file)
+
+        const res = await axios.post('/api/products/upload', formData, {
+            headers: { 'content-type': 'multipart/form-data',
+            Authorization: `Bearer ${userInfo.accessToken}`
+        }
+        })
+        console.log(res.data);
+        setImage(res.data)
+    }
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -86,10 +112,6 @@ const AdminInsertProduct = ({ location, history }) => {
 
     }
 
-    
-    
-      
-
     return (
         <FormContainer>
             <h3>Insert Product</h3>
@@ -103,7 +125,7 @@ const AdminInsertProduct = ({ location, history }) => {
                         type="text"
                         placeholder="Enter product name"
                         value={name}
-                        onChange={(e) => setName(e.target.value)}>
+                        onChange={(e) => setName(e.target.value)} required>
 
                     </Form.Control>
                 </Form.Group>
@@ -114,7 +136,7 @@ const AdminInsertProduct = ({ location, history }) => {
                         type="number"
                         placeholder="Enter price"
                         value={price}
-                        onChange={(e) => setPrice(e.target.value)}>
+                        onChange={(e) => setPrice(e.target.value)} required>
 
                     </Form.Control>
                 </Form.Group>
@@ -124,7 +146,7 @@ const AdminInsertProduct = ({ location, history }) => {
                         type="text"
                         placeholder="Enter description"
                         value={description}
-                        onChange={(e) => setDescription(e.target.value)}>
+                        onChange={(e) => setDescription(e.target.value)} required>
 
                     </Form.Control>
                 </Form.Group>
@@ -134,7 +156,7 @@ const AdminInsertProduct = ({ location, history }) => {
                         type="number"
                         placeholder="Enter Quantity"
                         value={qty}
-                        onChange={(e) => setQty(e.target.value)}>
+                        onChange={(e) => setQty(e.target.value)} required>
 
                     </Form.Control>
                 </Form.Group>
@@ -156,13 +178,18 @@ const AdminInsertProduct = ({ location, history }) => {
                 <Form.Group controlId="image" style={{ marginTop: "8px" }}>
                     <Form.Label>Image</Form.Label>
                     <Form.Control
-                        type="text"
-                        placeholder="Enter Image link"
-                        value={image}
-                        onChange={(e) => setImage(e.target.value)}>
+                        type="file"
+                        id='file' 
+                        required
+                        value={image.url}
+                        accept="images/*"
+                        onChange={onChange}>
 
                     </Form.Control>
+                    <Form.Label>{image.url}</Form.Label>
                 </Form.Group>
+
+
                 <div className="d-grid gap-2" style={{ marginTop: "16px" }}>
                     <Button
                         type="submit"

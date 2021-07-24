@@ -3,7 +3,8 @@ import {
     USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_REGISTER_FAIL,
     USER_DETAILS_REQUEST, USER_DETAILS_SUCCESS, USER_DETAILS_FAIL, USER_DETAILS_RESET,
     USER_UPDATE_PROFILE_REQUEST, USER_UPDATE_PROFILE_SUCCESS, USER_UPDATE_PROFILE_FAIL, USER_UPDATE_PROFILE_RESET,
-    USER_LIST_REQUEST, USER_LIST_SUCCESS, USER_LIST_FAIL, USER_LIST_RESET, USER_DELETE_REQUEST, USER_DELETE_SUCCESS, USER_DELETE_FAIL, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS, USER_UPDATE_FAIL
+    USER_LIST_REQUEST, USER_LIST_SUCCESS, USER_LIST_FAIL, USER_LIST_RESET, USER_DELETE_REQUEST, USER_DELETE_SUCCESS, USER_DELETE_FAIL, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS, USER_UPDATE_FAIL, USER_UPDATE_RESET,
+    USER_CREATE_REQUEST, USER_CREATE_SUCCESS, USER_CREATE_FAIL,
 
 } from '../constants/userConstants.js'
 
@@ -115,7 +116,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
     }
 }
 
-export const updateUserProfile = (id, user) => async (dispatch, getState) => {
+export const updateUserProfile = (user) => async (dispatch, getState) => {
     try {
         dispatch({
             type: USER_UPDATE_PROFILE_REQUEST
@@ -130,7 +131,7 @@ export const updateUserProfile = (id, user) => async (dispatch, getState) => {
             },
         }
 
-        const { data } = await axios.put(`/api/users/user/${id}`, user, config)
+        const { data } = await axios.put(`/api/users/user/${userInfo.id}`, user, config)
 
         dispatch({
             type: USER_UPDATE_PROFILE_SUCCESS,
@@ -174,6 +175,34 @@ export const listUsers = () => async (dispatch, getState) => {
     }
 }
 
+export const createUser = (userData) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: USER_CREATE_REQUEST
+        })
+
+        const { userLogin: { userInfo } } = getState()
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.accessToken}`
+            }
+        }
+
+        const { data } = await axios.post('/api/users/user', userData, config)
+
+        dispatch({
+            type: USER_CREATE_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: USER_CREATE_FAIL,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+        })
+    }
+}
+
 export const deleteUser = (id) => async (dispatch, getState) => {
     try {
         dispatch({
@@ -202,13 +231,14 @@ export const deleteUser = (id) => async (dispatch, getState) => {
     }
 }
 
-export const updateUser = (user) => async (dispatch, getState) => {
+export const updateUser = (userData) => async (dispatch, getState) => {
     try {
         dispatch({
             type: USER_UPDATE_REQUEST
         })
 
         const { userLogin: { userInfo } } = getState()
+        const {userDetails : {user}} = getState()
 
         const config = {
             headers: {
@@ -217,7 +247,7 @@ export const updateUser = (user) => async (dispatch, getState) => {
             },
         }
 
-        const { data } = await axios.put(`/api/users/user/${user.user_id}`, user, config)
+        const { data } = await axios.put(`/api/users/user/${user.data.user_id}`, userData, config)
 
         dispatch({
             type: USER_UPDATE_SUCCESS,

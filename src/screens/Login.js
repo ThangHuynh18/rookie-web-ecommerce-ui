@@ -34,7 +34,7 @@ const Login = ({ location, history }) => {
     return (
         <FormContainer>
             <h3>Sign In</h3>
-            {error && <h5><Message variant="danger">{error}</Message></h5>}
+            {error && <h5><Message variant="danger">Wrong usrname or password. Please check again</Message></h5>}
             {loading && <h5><Loader /></h5>}
             <Form onSubmit={submitHandler}>
                 <Form.Group controlId="email">
@@ -43,7 +43,7 @@ const Login = ({ location, history }) => {
                         type="text"
                         placeholder="Enter username"
                         value={username}
-                        onChange={(e) => setUsername(e.target.value)}>
+                        onChange={(e) => setUsername(e.target.value)} required>
 
                     </Form.Control>
                 </Form.Group>
@@ -53,7 +53,7 @@ const Login = ({ location, history }) => {
                         type="password"
                         placeholder="Enter password"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}>
+                        onChange={(e) => setPassword(e.target.value)} required>
 
                     </Form.Control>
                 </Form.Group>

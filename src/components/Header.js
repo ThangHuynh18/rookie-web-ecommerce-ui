@@ -9,28 +9,27 @@ import { listCategories } from '../actions/categoryActions.js'
 import { listBrands } from '../actions/brandActions.js'
 import { Link } from 'react-router-dom'
 
-const Header = () => {
+const Header = ({history}) => {
   const dispatch = useDispatch();
   //const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
   const userLogin = useSelector((state) => state.userLogin);
-  const { userInfo } = userLogin;
+  const { userInfo } = userLogin
 
   const { categories, error, loading }  = useSelector(state => state.categoryList)
-    
+  const { brands, errorBrand, loadingBrand }  = useSelector(state => state.brandList)
+  
+  const logoutHandler = () => {
+    dispatch(logout())
+  }
+
     useEffect(() => {
         dispatch(listCategories())
-    }, [dispatch])
-
-    const { brands, errorBrand, loadingBrand }  = useSelector(state => state.brandList)
-    
-    useEffect(() => {
         dispatch(listBrands())
     }, [dispatch])
 
-  const logoutHandler = () => {
-    dispatch(logout());
-  };
+    
 
+  
 
   return (
     <header>
@@ -85,7 +84,7 @@ const Header = () => {
                 </Nav.Link>
               </LinkContainer>
               {userInfo ? (
-                <NavDropdown title={userInfo.userName} id="username">
+                <NavDropdown title={userInfo.username} id="username">
                   <LinkContainer to="/profile">
                     <NavDropdown.Item>Profile</NavDropdown.Item>
                   </LinkContainer>

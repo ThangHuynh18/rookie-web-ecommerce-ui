@@ -131,13 +131,14 @@ export const createProduct = (productData) => async (dispatch, getState) => {
     }
 }
 
-export const updateProduct = (product) => async (dispatch, getState) => {
+export const updateProduct = (productEdit) => async (dispatch, getState) => {
     try {
         dispatch({
             type: PRODUCT_UPDATE_REQUEST
         })
 
         const { userLogin: { userInfo } } = getState()
+        const { productDetails: { product } } = getState()
 
         const config = {
             headers: {
@@ -145,8 +146,7 @@ export const updateProduct = (product) => async (dispatch, getState) => {
                 Authorization: `Bearer ${userInfo.accessToken}`
             },
         }
-
-        const { data } = await axios.put(`/api/products/product/${product.product_id}`, product, config)
+        const { data } = await axios.put(`/api/products/product/${product.data.product_id}`, productEdit, config)
 
         dispatch({
             type: PRODUCT_UPDATE_SUCCESS,

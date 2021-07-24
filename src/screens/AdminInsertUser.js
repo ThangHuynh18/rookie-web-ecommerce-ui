@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
-import { register } from '../actions/userActions.js'
+import { createUser } from '../actions/userActions.js'
 
 const AdminInsertUser = ({ location, history }) => {
     const [username, setUsername] = useState('')
@@ -17,21 +17,25 @@ const AdminInsertUser = ({ location, history }) => {
 
     const dispatch = useDispatch()
 
-    const userRegister = useSelector(state => state.userRegister)
-    const { loading, error, userInfo } = userRegister
+    const userCreate = useSelector(state => state.userCreate)
+    const { loading, error, success: successCreate } = userCreate
 
-    // const redirect = location.search ? location.search.split('=')[1] : '/'
-
-    // useEffect(() => {
-    //     if (userInfo) {
-    //         history.push(redirect)
-    //     }
-    // }, [history, userInfo, redirect])
+    useEffect(() => {
+        if (successCreate) {
+            history.push('/admin/userlist')
+        }
+    }, [history, successCreate])
 
     const submitHandler = (e) => {
         e.preventDefault()
-        dispatch(register(username, email, password))
-        history.push("/admin/userlist")
+        const data = {
+            userName: username,
+            userEmail: email,
+            userPassword: password,
+       
+        }
+        dispatch(createUser(data))
+        
     }
 
     return (
@@ -47,7 +51,7 @@ const AdminInsertUser = ({ location, history }) => {
                         type="text"
                         placeholder="Enter username"
                         value={username}
-                        onChange={(e) => setUsername(e.target.value)}>
+                        onChange={(e) => setUsername(e.target.value)} required>
 
                     </Form.Control>
                 </Form.Group>
@@ -58,7 +62,7 @@ const AdminInsertUser = ({ location, history }) => {
                         type="email"
                         placeholder="Enter email"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}>
+                        onChange={(e) => setEmail(e.target.value)} required>
 
                     </Form.Control>
                 </Form.Group>
@@ -68,7 +72,7 @@ const AdminInsertUser = ({ location, history }) => {
                         type="password"
                         placeholder="Enter password"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}>
+                        onChange={(e) => setPassword(e.target.value)} required>
 
                     </Form.Control>
                 </Form.Group>

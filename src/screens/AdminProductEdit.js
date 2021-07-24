@@ -15,7 +15,7 @@ const AdminUpdateEdit = ({ match, history }) => {
     const productId = match.params.id
 
     const dispatch = useDispatch()
-
+    const { userInfo } = useSelector(state => state.userLogin)
     const productDetails = useSelector(state => state.productDetails)
     const { loading, error, product } = productDetails
 
@@ -35,6 +35,7 @@ const AdminUpdateEdit = ({ match, history }) => {
     const { categories, error: errorCate, loading: loadingCate }  = useSelector(state => state.categoryList)
 
     const { brands, errorBrand, loadingBrand }  = useSelector(state => state.brandList)
+    
     useEffect(() => {
         dispatch(listCategories())
         dispatch(listBrands())
@@ -46,11 +47,13 @@ const AdminUpdateEdit = ({ match, history }) => {
             dispatch({ type: PRODUCT_UPDATE_RESET })
             history.push('/admin/productlist')
         } else {
-
-            // if (!product.data.productName || product.data.product_id !== productId) {
-                if(!productId){
-                dispatch(listProductDetails( match.params.id))
-                } else {
+            console.log('not product' + product);
+            if (!product) {
+                
+                dispatch(listProductDetails( productId))
+            } 
+            else {
+    
                 console.log(product)
                 setName(product.data.productName)
                 setPrice(product.data.productPrice)
@@ -58,33 +61,40 @@ const AdminUpdateEdit = ({ match, history }) => {
                 setBrand(product.data.brand_id)
                 setCategory(product.data.category_id)
                 setQty(product.data.productQty)
-                setDescription(product.data.productDescription)}
-        }
-    }, [dispatch, history, match, product, productId, successUpdate])
-
-    const uploadFileHandler = async (e) => {
-        const file = e.target.files[0]
-        const formData = new FormData()
-        formData.append('image', file)
-        setUploading(true)
-
-        try {
-            const config = {
-                headers: {
-                    'Content-type': 'multipart/form-data'
-                }
+                setDescription(product.data.productDescription)
             }
-            const { data } = await axios.post('/api/upload', formData, config)
-            setImage(data)
-            setUploading(false)
-        } catch (error) {
-            console.error(error)
-            setUploading(false)
         }
+    }, [dispatch, history, productId, product, successUpdate])
+
+
+    const onChange = async (e) => {
+        e.preventDefault()
+        const file = e.target.files[0]
+        console.log(file);
+        // if (!file) {
+        //     return alert.error('File not exist!')
+        // }
+        // if (file.type !== 'image/jpeg' && file.type !== 'image/jpg' && file.type !== 'image/png') {
+        //     return alert.error('File format is incorrect!')
+        // }
+        // if (file.size > 1024 * 1024 * 5) {
+        //     return alert.error('File too large!')
+        // }
+        let formData = new FormData()
+        formData.append('file', file)
+
+        const res = await axios.post('/api/products/upload', formData, {
+            headers: { 'content-type': 'multipart/form-data',
+            Authorization: `Bearer ${userInfo.accessToken}`
+        }
+        })
+        console.log(res.data);
+        setImage(res.data)
     }
 
     const submitHandler = (e) => {
         e.preventDefault()
+
         const data = {
             productName: name,
             productPrice: price,
@@ -124,7 +134,7 @@ const AdminUpdateEdit = ({ match, history }) => {
                             type="text"
                             placeholder="Enter product name"
                             value={name}
-                            onChange={(e) => setName(e.target.value)}>
+                            onChange={(e) => setName(e.target.value)} required>
                         </Form.Control>
                     </Form.Group>
                  
@@ -134,7 +144,7 @@ const AdminUpdateEdit = ({ match, history }) => {
                             type="number"
                             placeholder="Enter price"
                             value={price}
-                            onChange={(e) => setPrice(e.target.value)}>
+                            onChange={(e) => setPrice(e.target.value)} required>
     
                         </Form.Control>
                     </Form.Group>
@@ -144,7 +154,7 @@ const AdminUpdateEdit = ({ match, history }) => {
                             type="text"
                             placeholder="Enter description"
                             value={description}
-                            onChange={(e) => setDescription(e.target.value)}>
+                            onChange={(e) => setDescription(e.target.value)} required>
     
                         </Form.Control>
                     </Form.Group>
@@ -154,7 +164,7 @@ const AdminUpdateEdit = ({ match, history }) => {
                             type="number"
                             placeholder="Enter Quantity"
                             value={qty}
-                            onChange={(e) => setQty(e.target.value)}>
+                            onChange={(e) => setQty(e.target.value)} required>
     
                         </Form.Control>
                     </Form.Group>
@@ -183,22 +193,20 @@ const AdminUpdateEdit = ({ match, history }) => {
     
                         </Form.Control>
                     </Form.Group>
-                        {/* <Form.Group controlId="image" style={{ marginTop: "8px" }}>
-                            <Form.Label>Image</Form.Label>
-                            <Form.Control
-                                type="text"
-                                placeholder="Enter image url"
-                                value={image}
-                                onChange={(e) => setImage(e.target.value)}>
 
-                            </Form.Control>
-                            <Form.File style={{ marginTop: "8px" }}
-                                id="image-file"
-                                custom
-                                onChange={uploadFileHandler}>
-                            </Form.File>
-                            {uploading && <Loader />}
-                        </Form.Group> */}
+                    {/* <Form.Group controlId="image" style={{ marginTop: "8px" }}>
+                        <Form.Label>Image</Form.Label>
+                        <Form.Control
+                            type="file"
+                            id='file' 
+                            required
+                            value={image.url}
+                            accept="images/*"
+                            onChange={onChange}>
+
+                        </Form.Control>
+                        <Form.Label>{image.url}</Form.Label>
+                    </Form.Group> */}
                         <div className="d-grid gap-2" style={{ marginTop: "16px" }}>
                             <Button
                                 type="submit"

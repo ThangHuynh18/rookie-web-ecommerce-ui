@@ -52,7 +52,7 @@ const Register = ({ location, history }) => {
                         type="text"
                         placeholder="Enter your username"
                         value={username}
-                        onChange={(e) => setUsername(e.target.value)}>
+                        onChange={(e) => setUsername(e.target.value)} required>
 
                     </Form.Control>
                 </Form.Group>
@@ -63,7 +63,7 @@ const Register = ({ location, history }) => {
                         type="email"
                         placeholder="Enter email"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}>
+                        onChange={(e) => setEmail(e.target.value)} required>
 
                     </Form.Control>
                 </Form.Group>
@@ -73,7 +73,7 @@ const Register = ({ location, history }) => {
                         type="password"
                         placeholder="Enter password"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}>
+                        onChange={(e) => setPassword(e.target.value)} required>
 
                     </Form.Control>
                 </Form.Group>
@@ -83,7 +83,7 @@ const Register = ({ location, history }) => {
                         type="password"
                         placeholder="Enter confirm password"
                         value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}>
+                        onChange={(e) => setConfirmPassword(e.target.value)} required>
 
                     </Form.Control>
                 </Form.Group>
