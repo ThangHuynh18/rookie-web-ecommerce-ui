@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
+import { Container, Navbar, Nav, NavDropdown ,Form , FormControl, Button} from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { logout } from "../actions/userActions.js";
-import Loader from '../components/Loader'
-import Message from '../components/Message'
+import Loader from './Loader'
+import Message from './Message'
+import Search from './Search'
 import { listCategories } from '../actions/categoryActions.js'
 import { listBrands } from '../actions/brandActions.js'
-import { Link } from 'react-router-dom'
+import { Link ,Route} from 'react-router-dom'
 
 const Header = ({history}) => {
   const dispatch = useDispatch();
@@ -41,8 +42,8 @@ const Header = ({history}) => {
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
+            <Route render={({ history }) => <Search history={history} />} />
             <Nav className="ms-auto">
-            
               <NavDropdown title="Categories" id="basic-nav-dropdown">
               {
                 loading ? <h5><Loader /></h5> : error ? <h5><Message variant="danger">{error}</Message></h5> : 

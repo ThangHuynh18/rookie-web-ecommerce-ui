@@ -90,7 +90,7 @@ export const orderMyListReducer = (state = { orders: [] }, action) => {
                 error: action.payload
             }
         case ORDER_MY_LIST_RESET:
-            return { orders: [] }
+            return { }
         default:
             return state
     }

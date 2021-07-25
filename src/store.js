@@ -1,7 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import { productListReducer,productsCategoryReducer, productBrandReducer, productDetailsReducer, productDeleteReducer, productCreateReducer, productUpdateReducer } from './reducers/productReducers.js'
+import { productListReducer, productListAdminReducer, productsCategoryReducer, productBrandReducer, productDetailsReducer, productDeleteReducer, productCreateReducer, productUpdateReducer } from './reducers/productReducers.js'
 import { cartReducer } from './reducers/cartReducers.js'
 import { orderCreateReducer, orderDetailsReducer, orderPayReducer, orderMyListReducer, orderListReducer } from './reducers/orderReducers.js'
 import {
@@ -20,6 +20,7 @@ import {brandListReducer} from './reducers/brandReducers'
 
 const reducer = combineReducers({
     productList: productListReducer,
+    productListAdmin: productListAdminReducer,
     productsCategory: productsCategoryReducer,
     productBrandList: productBrandReducer,
     productDetails: productDetailsReducer,
@@ -64,6 +65,7 @@ const shippingAddressFromStorage = localStorage.getItem('shippingAddress') ? JSO
 
 const initialState = {
     productList: {loading: true},
+    productListAdmin: {loading: true},
     productDetails: {loading: true},
     userDetails: {loading: true},
     orderMyList: {loading: true},

@@ -51,11 +51,11 @@ const Profile = ({ history }) => {
         if (!userInfo) {
             history.push('/login')
         }else{
-
+            dispatch(getMyListOrder(userInfo.id))
             if (!user) {
               dispatch({ type: USER_UPDATE_PROFILE_RESET });
               dispatch(getUserDetails(userInfo.id));
-              dispatch(getMyListOrder(userInfo.id))
+              
             } else {
               setUsername(user.data.userName);
               setEmail(user.data.userEmail);
@@ -156,7 +156,7 @@ const Profile = ({ history }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {orders.data.map(order => (
+                            {userInfo && orders && orders.data.map(order => (
                                 <tr key={order.order_id}>
                                     <td class="align-middle">{order.order_id}</td>
                                     {/* <td class="align-middle">{order.createdAt.substring(0, 10)}</td> */}

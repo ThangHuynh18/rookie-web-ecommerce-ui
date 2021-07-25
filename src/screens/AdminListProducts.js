@@ -4,7 +4,7 @@ import { Button, Table, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { listProducts, deleteProduct, createProduct } from '../actions/productActions.js'
+import { listProductsAdmin, deleteProduct, createProduct } from '../actions/productActions.js'
 import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
 import { listCategories } from '../actions/categoryActions.js'
 import { listBrands } from '../actions/brandActions.js'
@@ -16,8 +16,8 @@ const AdminListProducts = ({ history, match }) => {
     const dispatch = useDispatch()
      const alert = useAlert()
 
-    const productList = useSelector(state => state.productList)
-    const { loading, error, products } = productList
+    const productListAdmin = useSelector(state => state.productListAdmin)
+    const { loading, error, products } = productListAdmin
 
     const productDelete = useSelector(state => state.productDelete)
     const { loading: loadingDelete, success: successDelete, error: errorDelete } = productDelete
@@ -36,7 +36,7 @@ const AdminListProducts = ({ history, match }) => {
             if (successCreate) {
                 history.push('/admin/productlist')
             } else {
-                dispatch(listProducts())
+                dispatch(listProductsAdmin())
                 dispatch(listCategories())
                 dispatch(listBrands())
             }
