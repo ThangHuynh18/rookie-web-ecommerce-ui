@@ -4,7 +4,9 @@ import {
     CATEGORY_LIST_FAIL, CATEGORY_DETAILS_REQUEST, CATEGORY_DETAILS_SUCCESS, CATEGORY_DETAILS_FAIL, 
     CATEGORY_CREATE_REQUEST, CATEGORY_CREATE_SUCCESS, CATEGORY_CREATE_FAIL, CATEGORY_CREATE_RESET,
     CATEGORY_DELETE_REQUEST, CATEGORY_DELETE_SUCCESS, CATEGORY_DELETE_FAIL,
-    CATEGORY_UPDATE_REQUEST, CATEGORY_UPDATE_SUCCESS, CATEGORY_UPDATE_FAIL, CATEGORY_UPDATE_RESET
+    CATEGORY_UPDATE_REQUEST, CATEGORY_UPDATE_SUCCESS, CATEGORY_UPDATE_FAIL, CATEGORY_UPDATE_RESET,
+    CATEGORY_PARENT_LIST_REQUEST, CATEGORY_PARENT_LIST_SUCCESS, CATEGORY_PARENT_LIST_FAIL,
+    CATEGORY_BY_PARENT_REQUEST, CATEGORY_BY_PARENT_SUCCESS, CATEGORY_BY_PARENT_FAIL
 } from '../constants/categoryConstants';
 
 export const categoryListReducer = (state = { categories: [] }, action) => {
@@ -14,6 +16,32 @@ export const categoryListReducer = (state = { categories: [] }, action) => {
         case CATEGORY_LIST_SUCCESS:
             return { loading: false, categories: action.payload.data }
         case CATEGORY_LIST_FAIL:
+            return { loading: false, error: action.payload }
+        default:
+            return state
+    }
+}
+
+export const parentListReducer = (state = { parents: [] }, action) => {
+    switch (action.type) {
+        case CATEGORY_PARENT_LIST_REQUEST:
+            return { loading: true, parents: [] }
+        case CATEGORY_PARENT_LIST_SUCCESS:
+            return { loading: false, parents: action.payload.data }
+        case CATEGORY_PARENT_LIST_FAIL:
+            return { loading: false, error: action.payload }
+        default:
+            return state
+    }
+}
+
+export const categoriesByParentReducer = (state = { catesParent: [] }, action) => {
+    switch (action.type) {
+        case CATEGORY_BY_PARENT_REQUEST:
+            return { loading: true, catesParent: [] }
+        case CATEGORY_BY_PARENT_SUCCESS:
+            return { loading: false, catesParent: action.payload.data }
+        case CATEGORY_BY_PARENT_FAIL:
             return { loading: false, error: action.payload }
         default:
             return state

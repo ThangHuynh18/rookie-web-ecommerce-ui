@@ -15,7 +15,7 @@ import {
     userCreateReducer
 } from './reducers/userReducers.js'
 
-import {categoryListReducer, categoryDetailsReducer, categoryCreateReducer, categoryDeleteReducer, categoryUpdateReducer} from './reducers/categoryReducers'
+import {categoryListReducer, parentListReducer, categoriesByParentReducer, categoryDetailsReducer, categoryCreateReducer, categoryDeleteReducer, categoryUpdateReducer} from './reducers/categoryReducers'
 import {brandListReducer} from './reducers/brandReducers'
 
 const reducer = combineReducers({
@@ -49,6 +49,8 @@ const reducer = combineReducers({
     categoryList: categoryListReducer,
     brandList: brandListReducer,
 
+    parentList: parentListReducer,
+    categoryByParentList: categoriesByParentReducer,
     categoryDetails: categoryDetailsReducer,
     categoryCreate: categoryCreateReducer,
     categoryDelete: categoryDeleteReducer,
@@ -76,6 +78,7 @@ const initialState = {
     productsCategory: {loadingCategory: true},
     productBrandList: {loadingProductBrand: true},
     userList: {loading: true},
+    categoryDetails: {loading: true},
     
 
     cart: {

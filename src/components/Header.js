@@ -103,6 +103,9 @@ const Header = ({history}) => {
 
               {userInfo && userInfo.roles[0] === 'admin' && (
                 <NavDropdown title="ADMIN DASHBOARD" id="adminmenu">
+                   <LinkContainer to="/admin/categorylist">
+                    <NavDropdown.Item>Categories</NavDropdown.Item>
+                  </LinkContainer>
                   <LinkContainer to="/admin/userlist">
                     <NavDropdown.Item>Users</NavDropdown.Item>
                   </LinkContainer>

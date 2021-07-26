@@ -20,7 +20,9 @@ import AdminProductEdit from './screens/AdminProductEdit'
 import AdminListOrders from './screens/AdminListOrders'
 import AdminInsertProduct from './screens/AdminInsertProduct'
 import AdminInsertUser from './screens/AdminInsertUser'
-
+import AdminLisCategory from './screens/AdminListCategory'
+import AdminInsertCategory from './screens/AdminInsertCategory'
+import AdminCategoryEdit from './screens/AdminCategoryEdit'
 
 const App = () => {
     return (
@@ -45,11 +47,14 @@ const App = () => {
                     <Route path='/admin/userlist' component={AdminListUsers} />
                     <Route path='/admin/user/:id/edit' component={AdminUserEdit} />
                     <Route path='/admin/productlist' component={AdminListProducts} />
+                    <Route path='/admin/categorylist' component={AdminLisCategory} />
 
                     <Route path='/admin/product/insert' component={AdminInsertProduct} />
                     <Route path='/admin/user/insert' component={AdminInsertUser} />
+                    <Route path='/admin/category/insert' component={AdminInsertCategory} />
 
                     <Route path='/admin/product/:id/edit' component={AdminProductEdit} />
+                    <Route path='/admin/category/:id/edit' component={AdminCategoryEdit} />
                     <Route path='/admin/orderlist' component={AdminListOrders} />
 
                 </Container>
