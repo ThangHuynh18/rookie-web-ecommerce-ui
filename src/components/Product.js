@@ -3,13 +3,10 @@ import { Card, Button } from 'react-bootstrap'
 import Rating from './Rating'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-
+import NumberFormat from 'react-number-format';
 
 
 const Product = ({product}) => {
-    // const imageList = useSelector(state => state.imageList)
-    // const { loading, error, images } = imageList
-    // console.log(imageList)
 
     return (
         <Card className="my-3 p-3 rounded">
@@ -28,9 +25,7 @@ const Product = ({product}) => {
                         value={product.rating}
                         text={` ${product.numReviews} reviews`}/>  */}
                 </Card.Text>
-
-                <Card.Text as='h4'>${product.productPrice}</Card.Text>
-
+                <Card.Text as='h4'><NumberFormat value={product.productPrice} displayType={'text'} thousandSeparator={true} suffix={'đ'} /></Card.Text>
                 <Link to={`/product/${product.product_id}`}>
                     <Button size="sm" variant="outline-primary">View more</Button>
                 </Link>

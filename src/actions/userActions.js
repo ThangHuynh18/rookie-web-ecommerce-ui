@@ -5,6 +5,7 @@ import {
     USER_UPDATE_PROFILE_REQUEST, USER_UPDATE_PROFILE_SUCCESS, USER_UPDATE_PROFILE_FAIL, USER_UPDATE_PROFILE_RESET,
     USER_LIST_REQUEST, USER_LIST_SUCCESS, USER_LIST_FAIL, USER_LIST_RESET, USER_DELETE_REQUEST, USER_DELETE_SUCCESS, USER_DELETE_FAIL, USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS, USER_UPDATE_FAIL, USER_UPDATE_RESET,
     USER_CREATE_REQUEST, USER_CREATE_SUCCESS, USER_CREATE_FAIL,
+    DETAILS_OF_USER_REQUEST, DETAILS_OF_USER_SUCCESS, DETAILS_OF_USER_FAIL,
 
 } from '../constants/userConstants.js'
 
@@ -93,13 +94,6 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
 
         const { userLogin: { userInfo } } = getState()
 
-        // const config = {
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         Authorization: `Bearer ${userInfo.token}`
-        //     },
-        // }
-
         const { data } = await axios.get(`/api/users/${id}`, {
             headers: { Authorization: `Bearer ${userInfo.accessToken}`}})
 
@@ -111,6 +105,30 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
     } catch (error) {
         dispatch({
             type: USER_DETAILS_FAIL,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+        })
+    }
+}
+
+export const getDetailsOfUser = (id) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: DETAILS_OF_USER_REQUEST, payload: id
+        })
+
+        const { userLogin: { userInfo } } = getState()
+
+        const { data } = await axios.get(`/api/udetails/user/${id}`, {
+            headers: { Authorization: `Bearer ${userInfo.accessToken}`}})
+
+        dispatch({
+            type: DETAILS_OF_USER_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: DETAILS_OF_USER_FAIL,
             payload: error.response && error.response.data.message ? error.response.data.message : error.message,
         })
     }

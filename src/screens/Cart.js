@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import NumberFormat from 'react-number-format';
 import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import Message from '../components/Message.js'
@@ -10,8 +11,10 @@ const Cart = ({ match, location, history }) => {
     const productId = match.params.id
     const qty = location.search ? Number(location.search.split('=')[1]) : 1
     const dispatch = useDispatch()
+
     const cart = useSelector(state => state.cart)
     const { cartItems } = cart
+
 
     useEffect(() => {
         if (productId) {
@@ -43,12 +46,16 @@ const Cart = ({ match, location, history }) => {
                                                 <Image src={item.image} alt={item.name} fluid rounded></Image>
                                             </Col>
                                             <Col md={3} style={{ margin: "auto" }}>
+                                                <h5>Name</h5>
                                                 <Link className="text-decoration-none" to={`products/${item.product}`}>{item.name}</Link>
                                             </Col>
                                             <Col md={2} style={{ margin: "auto" }}>
-                                                ${item.price}
+                                                <h5>Price</h5>
+                                                <NumberFormat value={item.price} displayType={'text'} thousandSeparator={true} suffix={'đ'} />
+                                                {/* ${item.price} */}
                                             </Col>
                                             <Col md={2} style={{ margin: "auto" }}>
+                                                
                                                 <Form.Control as="select" value={item.qty} onChange={(e) =>
                                                     dispatch(addToCart(item.product, Number(e.target.value)))}>
 
@@ -76,7 +83,8 @@ const Cart = ({ match, location, history }) => {
                     <ListGroup variant="flush">
                         <ListGroup.Item>
                             <h4>Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)}) items</h4>
-                            ${cartItems.reduce((acc, item) => acc + item.qty * item.price, 0)}
+                                <NumberFormat value={cartItems.reduce((acc, item) => acc + item.qty * item.price, 0)} displayType={'text'} thousandSeparator={true} suffix={'đ'} />
+                            {/* ${cartItems.reduce((acc, item) => acc + item.qty * item.price, 0)} */}
                         </ListGroup.Item>
                         <ListGroup.Item>
                             <div className="d-grid gap-2">

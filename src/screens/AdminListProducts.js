@@ -10,6 +10,7 @@ import { listCategories } from '../actions/categoryActions.js'
 import { listBrands } from '../actions/brandActions.js'
 import { useAlert } from 'react-alert'
 import { MDBDataTableV5 } from 'mdbreact'
+import NumberFormat from 'react-number-format';
 
 
 const AdminListProducts = ({ history, match }) => {
@@ -52,7 +53,7 @@ const AdminListProducts = ({ history, match }) => {
         const data = {
             columns: [
                 {
-                    label: 'Product ID',
+                    label: 'ID',
                     field: 'product_id',
                     sort: 'asc'
                 },
@@ -99,7 +100,8 @@ const AdminListProducts = ({ history, match }) => {
             data.rows.push({
                 product_id: product.product_id,
                 productName: product.productName,
-                productPrice: product.productPrice,
+                productPrice: <NumberFormat value={product.productPrice} displayType={'text'} thousandSeparator={true} suffix={'đ'} />,
+                // productPrice: product.productPrice,
                 productQty: product.productQty,
                 category: product.categoryName,
                 brand: product.brandName,

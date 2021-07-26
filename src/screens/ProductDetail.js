@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Card, Button, Form } from 'react-bootstrap'
+import NumberFormat from 'react-number-format';
 import Rating from '../components/Rating'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
@@ -42,7 +43,10 @@ const ProductDetail = ({ history, match }) => {
                                     <Rating value={product.data.ratingDTOS[0].ratingNumber} />
                                 </ListGroup.Item> */}
                                 <ListGroup.Item>
-                                    <h5>Price: ${product.data.productPrice}</h5>
+                                    <h5>Price :  
+                                        <NumberFormat value={product.data.productPrice} displayType={'text'} thousandSeparator={true} suffix={'đ'} />
+                                    </h5>
+                            
                                 </ListGroup.Item>
                                 <ListGroup.Item>
                                     Description: {product.data.productDescription}
@@ -58,7 +62,8 @@ const ProductDetail = ({ history, match }) => {
                                                 <h5>Price:</h5>
                                             </Col>
                                             <Col>
-                                                <h5>${product.data.productPrice}</h5>
+                                                <h5><NumberFormat value={product.data.productPrice} displayType={'text'} thousandSeparator={true} suffix={'đ'} /></h5>
+                                               
                                             </Col>
                                         </Row>
                                     </ListGroup.Item>

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
+import NumberFormat from 'react-number-format';
 import Message from '../components/Message'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { createOrder } from '../actions/orderActions.js'
@@ -13,6 +14,9 @@ const PlaceOrder = ({ history }) => {
     // }
     const dispatch = useDispatch()
     const cart = useSelector((state) => state.cart)
+
+    const userLogin = useSelector(state => state.userLogin)
+    const { userInfo } = userLogin
 
     cart.itemsPrice = cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
     cart.shippingPrice = cart.itemsPrice > 100000 ? 0 : 10000
@@ -26,25 +30,34 @@ const PlaceOrder = ({ history }) => {
 
     useEffect(() => {
         if (success) {
-
-            history.push(`/orders/${order._id}`)
+            history.push(`/profile`)
+            // history.push(`/orders/${order.order_id}`)
         }
         // eslint-disable-next-line
     }, [history, success])
 
 
 
-    const placeOrderHandler = () => {
-        dispatch(createOrder({
-            orderItems: cart.cartItems,
-            shippingAddress: cart.shippingAddress,
-            paymentMethod: cart.paymentMethod,
-            itemsPrice: cart.itemsPrice,
-            shippingPrice: cart.shippingPrice,
-            taxPrice: cart.taxPrice,
-            totalPrice: cart.totalPrice
+    const placeOrderHandler = (e) => {
+        e.preventDefault()
+        const data = {
+            totalQty: cart.cartItems[0].qty,
+            totalPrice: cart.itemsPrice,
+            user_id: userInfo.id,
+            status_id: 1
+            
+          };
+          dispatch(createOrder(data))
+        // dispatch(createOrder({
+        //     orderItems: cart.cartItems,
+        //     shippingAddress: cart.shippingAddress,
+        //     paymentMethod: cart.paymentMethod,
+        //     itemsPrice: cart.itemsPrice,
+        //     shippingPrice: cart.shippingPrice,
+        //     taxPrice: cart.taxPrice,
+        //     totalPrice: cart.totalPrice
 
-        }))
+        // }))
     }
 
     return (
@@ -57,10 +70,11 @@ const PlaceOrder = ({ history }) => {
                         <ListGroup.Item>
                             <h4>Shipping</h4>
                             <p>
-                                <strong>Address: </strong>{cart.shippingAddress.address},{' '}{cart.shippingAddress.city},{' '}{cart.shippingAddress.country}
+                                {/* <strong>Address: </strong>{cart.shippingAddress.address},{' '}{cart.shippingAddress.city},{' '}{cart.shippingAddress.country} */}
+                                <strong>Address: </strong>{cart.shippingAddress.address}
                             </p>
                             <p>
-                                <strong>Postal Code: </strong>{cart.shippingAddress.postalCode}
+                                <strong>Phone: </strong>{cart.shippingAddress.phone}
                             </p>
                         </ListGroup.Item>
                         <ListGroup.Item>
@@ -85,7 +99,8 @@ const PlaceOrder = ({ history }) => {
                                                         <Link className="text-decoration-none" to={`/products/${item.product}`}>{item.name}</Link>
                                                     </Col>
                                                     <Col md={4} style={{ margin: "auto" }}>
-                                                        {item.qty} x ${item.price} = ${item.qty * item.price}
+                                                    {item.qty} x <NumberFormat value={item.price} displayType={'text'} thousandSeparator={true}/> = <NumberFormat value={item.qty * item.price} displayType={'text'} thousandSeparator={true} suffix={'đ'} />
+                                                        {/* {item.qty} x ${item.price} = ${item.qty * item.price} */}
                                                     </Col>
                                                 </Row>
                                             </ListGroup.Item>
@@ -104,25 +119,25 @@ const PlaceOrder = ({ history }) => {
                             <ListGroup.Item>
                                 <Row>
                                     <Col>Items</Col>
-                                    <Col>${cart.itemsPrice}</Col>
+                                    <Col><NumberFormat value={cart.itemsPrice} displayType={'text'} thousandSeparator={true} suffix={'đ'} /></Col>
                                 </Row>
                             </ListGroup.Item>
                             <ListGroup.Item>
                                 <Row>
                                     <Col>Shipping</Col>
-                                    <Col>${cart.shippingPrice}</Col>
+                                    <Col><NumberFormat value={cart.shippingPrice} displayType={'text'} thousandSeparator={true} suffix={'đ'} /></Col>
                                 </Row>
                             </ListGroup.Item>
                             <ListGroup.Item>
                                 <Row>
                                     <Col>Tax</Col>
-                                    <Col>${cart.taxPrice}</Col>
+                                    <Col><NumberFormat value={cart.taxPrice} displayType={'text'} thousandSeparator={true} suffix={'đ'} /></Col>
                                 </Row>
                             </ListGroup.Item>
                             <ListGroup.Item>
                                 <Row>
                                     <Col>Total</Col>
-                                    <Col>${cart.totalPrice}</Col>
+                                    <Col><NumberFormat value={cart.totalPrice} displayType={'text'} thousandSeparator={true} suffix={'đ'} /></Col>
                                 </Row>
                             </ListGroup.Item>
                             <ListGroup.Item>

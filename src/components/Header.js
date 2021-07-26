@@ -6,7 +6,7 @@ import { logout } from "../actions/userActions.js";
 import Loader from './Loader'
 import Message from './Message'
 import Search from './Search'
-import { listCategories } from '../actions/categoryActions.js'
+import { listCategories, listParent } from '../actions/categoryActions.js'
 import { listBrands } from '../actions/brandActions.js'
 import { Link ,Route} from 'react-router-dom'
 
@@ -18,6 +18,9 @@ const Header = ({history}) => {
 
   const { categories, error, loading }  = useSelector(state => state.categoryList)
   const { brands, errorBrand, loadingBrand }  = useSelector(state => state.brandList)
+
+  const parentList = useSelector(state => state.parentList)
+    const {loading: loadingParent, error: errorParent, parents } = parentList
   
   const logoutHandler = () => {
     dispatch(logout())
@@ -25,6 +28,7 @@ const Header = ({history}) => {
 
     useEffect(() => {
         dispatch(listCategories())
+        //dispatch(listParent())
         dispatch(listBrands())
     }, [dispatch])
 
@@ -49,7 +53,9 @@ const Header = ({history}) => {
                 loading ? <h5><Loader /></h5> : error ? <h5><Message variant="danger">{error}</Message></h5> : 
                   categories.map(item => (
                     <LinkContainer to={`/products/category/${item.category_id}`}>
-                      <NavDropdown.Item key={item.category_id}>{item.categoryName}</NavDropdown.Item>
+                      <NavDropdown.Item key={item.category_id}>{item.categoryName}
+                          
+                      </NavDropdown.Item>
                     </LinkContainer>
                   ))
               }  

@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { Row, Col, Button, Form, Table } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
+import NumberFormat from 'react-number-format';
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { getUserDetails, updateUserProfile } from '../actions/userActions.js'
+import { getUserDetails, updateUserProfile, getDetailsOfUser } from '../actions/userActions.js'
 import { getMyListOrder } from '../actions/orderActions'
 import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants';
 
@@ -12,6 +13,7 @@ const Profile = ({ history }) => {
     const [userName, setUsername] = useState('')
     const [phone, setPhone] = useState('')
     const [email, setEmail] = useState('')
+    const [address, setAddress] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [message, setMessage] = useState(null)
@@ -20,6 +22,9 @@ const Profile = ({ history }) => {
 
     const userDetails = useSelector(state => state.userDetails)
     const { loading, error, user } = userDetails
+
+    const detailsOfUser = useSelector(state => state.detailsOfUser)
+    const { loading: loadingDetail, error: errorDetail, detail } = detailsOfUser
 
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
@@ -30,23 +35,6 @@ const Profile = ({ history }) => {
     const orderMyList = useSelector(state => state.orderMyList)
     const { loading: loadingOrders, error: errorOrders, orders } = orderMyList
 
-   // console.log(user.userName)
-    // useEffect(() => {
-    //     if (!userInfo) {
-    //         history.push('/login')
-    //     } else {
-    //         if (!userInfo.userName) {
-    //             dispatch({ type: USER_UPDATE_PROFILE_RESET });
-    //             dispatch(getUserDetails(userInfo.id))
-    //             //dispatch(getMyListOrder())
-    //         } else {
-    //             setUsername(user.data.userName)
-    //             //setPhone(user.phone)
-    //             setEmail(user.data.userEmail)
-    //         }
-    //     }
-    // }, [dispatch, history, userInfo, user])
-
     useEffect(() => {
         if (!userInfo) {
             history.push('/login')
@@ -55,21 +43,31 @@ const Profile = ({ history }) => {
             if (!user) {
               dispatch({ type: USER_UPDATE_PROFILE_RESET });
               dispatch(getUserDetails(userInfo.id));
+              dispatch(getDetailsOfUser(userInfo.id));
               
             } else {
               setUsername(user.data.userName);
               setEmail(user.data.userEmail);
+            //   console.log("aa"+detail.udetailPhone)
+            //   setPhone(detail.udetailPhone);
+            //   setAddress(detail.udetailAddress);
             }
         }
-      }, [dispatch, history, userInfo, user]);
+      }, [dispatch, history, userInfo, user, detail]);
 
     const submitHandler = (e) => {
         e.preventDefault()
         if (password !== confirmPassword) {
             setMessage('Passwords do not match')
         } else {
+            const data = {
+                userName: userName,
+                userEmail: email,
+                userPassword: password
+                
+              };
             //DISPATCH UPDATE PROFILE
-            dispatch(updateUserProfile({ user_id: user.user_id, userName, email, password }))
+            dispatch(updateUserProfile(data))
         }
     }
 
@@ -79,8 +77,10 @@ const Profile = ({ history }) => {
                 <h4>My Profile</h4>
                 {message && <span><Message variant="danger">{message}</Message></span>}
                 {error && <span><Message variant="danger">{error}</Message></span>}
+                {errorDetail && <span><Message variant="danger">{errorDetail}</Message></span>}
                 {success && <span><Message variant="success">Profile Updated</Message></span>}
                 {loading && <h5><Loader /></h5>}
+                {loadingDetail && <h5><Loader /></h5>}
                 <Form onSubmit={submitHandler}>
                     <Form.Group controlId="name">
                         <Form.Label>Username</Form.Label>
@@ -92,16 +92,6 @@ const Profile = ({ history }) => {
 
                         </Form.Control>
                     </Form.Group>
-                    {/* <Form.Group controlId="phone" style={{ marginTop: "8px" }}>
-                        <Form.Label>Phone Number</Form.Label>
-                        <Form.Control
-                            type="number"
-                            placeholder="Enter your phone number"
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}>
-
-                        </Form.Control>
-                    </Form.Group> */}
                     <Form.Group controlId="email" style={{ marginTop: "8px" }}>
                         <Form.Label>Email address</Form.Label>
                         <Form.Control
@@ -109,6 +99,26 @@ const Profile = ({ history }) => {
                             placeholder="Enter email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}>
+
+                        </Form.Control>
+                    </Form.Group>
+                    <Form.Group controlId="phone" style={{ marginTop: "8px" }}>
+                        <Form.Label>Phone</Form.Label>
+                        <Form.Control
+                            type="number"
+                            placeholder="Enter your phone number"
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}>
+
+                        </Form.Control>
+                    </Form.Group>
+                    <Form.Group controlId="address" style={{ marginTop: "8px" }}>
+                        <Form.Label>Address</Form.Label>
+                        <Form.Control
+                            type="text"
+                            placeholder="Enter address"
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}>
 
                         </Form.Control>
                     </Form.Group>
@@ -161,7 +171,7 @@ const Profile = ({ history }) => {
                                     <td class="align-middle">{order.order_id}</td>
                                     {/* <td class="align-middle">{order.createdAt.substring(0, 10)}</td> */}
                                     <td class="align-middle">{order.totalQty}</td>
-                                    <td class="align-middle">{order.totalPrice}</td>
+                                    <td class="align-middle"><NumberFormat value={order.totalPrice} displayType={'text'} thousandSeparator={true} suffix={'đ'} /></td>
                                     {/* <td class="align-middle" style={{ textAlign: "center" }} >{order.isPaid ? order.paidAt.substring(0, 10) : (
                                         <i className="fas fa-times" style={{ color: "red" }}></i>
                                     )}</td>

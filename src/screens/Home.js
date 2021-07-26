@@ -40,7 +40,7 @@ const Home = ({match}) => {
                 <>
                 <h3>Category: </h3>
                 {
-                    loadingCategory ? <h5><Loader /></h5> : errorCategory ? <h5><Message variant="danger">{errorCategory}</Message></h5> :
+                    productsCate && loadingCategory ? <h5><Loader /></h5> : errorCategory ? <h5><Message variant="danger">{errorCategory}</Message></h5> :
                         <Row>
                             {productsCate.map(product => ( 
                                 <Col key={product.product_id} sm={12} md={6} lg={4} xl={3}>

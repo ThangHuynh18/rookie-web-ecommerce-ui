@@ -12,7 +12,8 @@ import {
     userListReducer,
     userDeleteReducer,
     userUpdateReducer,
-    userCreateReducer
+    userCreateReducer,
+    detailsOfUserReducer
 } from './reducers/userReducers.js'
 
 import {categoryListReducer, parentListReducer, categoriesByParentReducer, categoryDetailsReducer, categoryCreateReducer, categoryDeleteReducer, categoryUpdateReducer} from './reducers/categoryReducers'
@@ -39,6 +40,7 @@ const reducer = combineReducers({
     userDelete: userDeleteReducer,
     userUpdate: userUpdateReducer,
     userCreate: userCreateReducer,
+    detailsOfUser: detailsOfUserReducer,
 
     orderCreate: orderCreateReducer,
     orderDetails: orderDetailsReducer,
@@ -79,7 +81,7 @@ const initialState = {
     productBrandList: {loadingProductBrand: true},
     userList: {loading: true},
     categoryDetails: {loading: true},
-    
+    detailsOfUser: {loading: true},
 
     cart: {
         cartItems: cartItemsFromStorage,
