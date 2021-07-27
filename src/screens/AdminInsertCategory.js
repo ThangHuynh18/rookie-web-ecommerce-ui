@@ -9,6 +9,7 @@ import { createCategory } from '../actions/categoryActions'
 
 const AdminInsertCategory = ({ location, history }) => {
     const [name, setName] = useState('')
+    const [parent, setParent] = useState(0);
     
     const [message, setMessage] = useState(null)
 
@@ -16,6 +17,9 @@ const AdminInsertCategory = ({ location, history }) => {
 
     const categoryCreate = useSelector(state => state.categoryCreate)
     const { loading, error, success: successCreate } = categoryCreate
+
+    const parentList = useSelector(state => state.parentList)
+    const {loading: loadingParent, error: errorParent, parents } = parentList
 
     useEffect(() => {
         if (successCreate) {
@@ -27,7 +31,7 @@ const AdminInsertCategory = ({ location, history }) => {
         e.preventDefault()
         const data = {
             categoryName: name,
-       
+            parent_id: parent
         }
         dispatch(createCategory(data))
         
@@ -50,6 +54,14 @@ const AdminInsertCategory = ({ location, history }) => {
 
                     </Form.Control>
                 </Form.Group>
+                <Form.Group controlId="parent" style={{ marginTop: "8px" }}>
+                        <Form.Label>Parent</Form.Label>
+                         <select className="form-control" id="category" value={parent} onChange={(e) => setParent(e.target.value)}>
+                                {  loadingParent ? <h5><Loader /></h5> : errorParent ? <h5><Message variant="danger">{errorParent}</Message></h5> : 
+                                    parents.map(item =>  <option key={item.category_id} value={item.category_id}>{item.categoryName}</option>)}
+                         </select>
+                        
+                    </Form.Group>
              
             
                 <div className="d-grid gap-2" style={{ marginTop: "16px" }}>

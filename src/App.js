@@ -23,6 +23,7 @@ import AdminInsertUser from './screens/AdminInsertUser'
 import AdminLisCategory from './screens/AdminListCategory'
 import AdminInsertCategory from './screens/AdminInsertCategory'
 import AdminCategoryEdit from './screens/AdminCategoryEdit'
+import OrderDetail from './screens/OrderDetail'
 
 const App = () => {
     return (
@@ -44,6 +45,9 @@ const App = () => {
                     <Route path='/payment' component={Payment} />
                     <Route path='/placeorder' component={PlaceOrder} />
                     <Route path='/orders/:id' component={Order} />
+
+                    <Route path='/orderdetails/:id' component={OrderDetail} />
+                    
                     <Route path='/admin/userlist' component={AdminListUsers} />
                     <Route path='/admin/user/:id/edit' component={AdminUserEdit} />
                     <Route path='/admin/productlist' component={AdminListProducts} />

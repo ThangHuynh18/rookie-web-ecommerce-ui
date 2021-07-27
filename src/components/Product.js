@@ -20,11 +20,11 @@ const Product = ({product}) => {
                         <h5>{product.productName}</h5>
                     </Card.Title>
                 </Link>
-                <Card.Text as='div'>
-                   {/* <Rating 
-                        value={product.rating}
-                        text={` ${product.numReviews} reviews`}/>  */}
-                </Card.Text>
+                {/* <Card.Text as='div'>
+                   <Rating 
+                        value={product.ratingDTOS[0].ratingNumber}
+                        text={` ${product.numReviews} reviews`}/> 
+                </Card.Text> */}
                 <Card.Text as='h4'><NumberFormat value={product.productPrice} displayType={'text'} thousandSeparator={true} suffix={'đ'} /></Card.Text>
                 <Link to={`/product/${product.product_id}`}>
                     <Button size="sm" variant="outline-primary">View more</Button>

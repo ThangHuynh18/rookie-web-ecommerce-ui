@@ -48,9 +48,18 @@ const Profile = ({ history }) => {
             } else {
               setUsername(user.data.userName);
               setEmail(user.data.userEmail);
-            //   console.log("aa"+detail.udetailPhone)
-            //   setPhone(detail.udetailPhone);
-            //   setAddress(detail.udetailAddress);
+              if(detail){
+                  if(detail.length === 0){
+                    setPhone('')
+                    setAddress('')
+                  } else{
+                    console.log("aa"+detail[0].udetailPhone)
+                    setPhone(detail[0].udetailPhone);
+                    setAddress(detail[0].udetailAddress);
+                  }
+                
+              }
+              
             }
         }
       }, [dispatch, history, userInfo, user, detail]);
@@ -102,7 +111,7 @@ const Profile = ({ history }) => {
 
                         </Form.Control>
                     </Form.Group>
-                    <Form.Group controlId="phone" style={{ marginTop: "8px" }}>
+                    {/* <Form.Group controlId="phone" style={{ marginTop: "8px" }}>
                         <Form.Label>Phone</Form.Label>
                         <Form.Control
                             type="number"
@@ -121,7 +130,7 @@ const Profile = ({ history }) => {
                             onChange={(e) => setAddress(e.target.value)}>
 
                         </Form.Control>
-                    </Form.Group>
+                    </Form.Group> */}
                     <Form.Group controlId="password" style={{ marginTop: "8px" }}>
                         <Form.Label>Password</Form.Label>
                         <Form.Control
@@ -179,7 +188,7 @@ const Profile = ({ history }) => {
                                         <i className="fas fa-times" style={{ color: "red" }}></i>
                                     )}</td> */}
                                     <td class="align-middle">
-                                        <LinkContainer to={`/orders/${order.order_id}`} className="text-decoration-none">
+                                        <LinkContainer to={`/orderdetails/${order.order_id}`} className="text-decoration-none">
                                             <Button className="btn-sm" variant="light">Details</Button>
                                         </LinkContainer>
                                     </td>

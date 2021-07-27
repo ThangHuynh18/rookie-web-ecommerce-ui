@@ -3,6 +3,7 @@ import {
 } from '../constants/cartConstants'
 
 import axios from 'axios'
+import { logDOM } from '@testing-library/react'
 
 export const addToCart = (id, qty) => async (dispatch, getState) => {
 
@@ -32,6 +33,7 @@ export const removeFromCart = (id) => (dispatch, getState) => {
 }
 
 export const saveShippingAddress = (data) => (dispatch) => {
+    console.log(data);
     dispatch({
         type: CART_SAVE_SHIPPING_ADDRESS,
         payload: data

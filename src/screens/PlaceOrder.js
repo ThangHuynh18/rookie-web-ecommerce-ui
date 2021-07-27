@@ -21,7 +21,8 @@ const PlaceOrder = ({ history }) => {
     cart.itemsPrice = cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
     cart.shippingPrice = cart.itemsPrice > 100000 ? 0 : 10000
     cart.taxPrice = Number((0.1 * cart.itemsPrice).toFixed(2))
-    cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice
+    cart.totalPrice = cart.itemsPrice + cart.shippingPrice
+    // cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice
 
 
     const orderCreate = useSelector(state => state.orderCreate)
@@ -36,18 +37,23 @@ const PlaceOrder = ({ history }) => {
         // eslint-disable-next-line
     }, [history, success])
 
-
+    let qtyCart = 0
+    for(let i = 0; i < cart.cartItems.length; i++) {
+        qtyCart = qtyCart + cart.cartItems[i].qty
+    }
 
     const placeOrderHandler = (e) => {
         e.preventDefault()
+        
         const data = {
-            totalQty: cart.cartItems[0].qty,
+            totalQty: qtyCart,
             totalPrice: cart.itemsPrice,
             user_id: userInfo.id,
-            status_id: 1
+            status_id: 1,
             
           };
-          dispatch(createOrder(data))
+        const cartItems=cart.cartItems
+        dispatch(createOrder(data,cartItems))
         // dispatch(createOrder({
         //     orderItems: cart.cartItems,
         //     shippingAddress: cart.shippingAddress,
@@ -71,10 +77,10 @@ const PlaceOrder = ({ history }) => {
                             <h4>Shipping</h4>
                             <p>
                                 {/* <strong>Address: </strong>{cart.shippingAddress.address},{' '}{cart.shippingAddress.city},{' '}{cart.shippingAddress.country} */}
-                                <strong>Address: </strong>{cart.shippingAddress.address}
+                                <strong>Address: </strong>{cart.shippingAddress.udetailAddress}
                             </p>
                             <p>
-                                <strong>Phone: </strong>{cart.shippingAddress.phone}
+                                <strong>Phone: </strong>{cart.shippingAddress.udetailPhone}
                             </p>
                         </ListGroup.Item>
                         <ListGroup.Item>
@@ -118,7 +124,7 @@ const PlaceOrder = ({ history }) => {
                             </ListGroup.Item>
                             <ListGroup.Item>
                                 <Row>
-                                    <Col>Items</Col>
+                                    <Col>Price</Col>
                                     <Col><NumberFormat value={cart.itemsPrice} displayType={'text'} thousandSeparator={true} suffix={'đ'} /></Col>
                                 </Row>
                             </ListGroup.Item>
@@ -128,12 +134,12 @@ const PlaceOrder = ({ history }) => {
                                     <Col><NumberFormat value={cart.shippingPrice} displayType={'text'} thousandSeparator={true} suffix={'đ'} /></Col>
                                 </Row>
                             </ListGroup.Item>
-                            <ListGroup.Item>
+                            {/* <ListGroup.Item>
                                 <Row>
                                     <Col>Tax</Col>
                                     <Col><NumberFormat value={cart.taxPrice} displayType={'text'} thousandSeparator={true} suffix={'đ'} /></Col>
                                 </Row>
-                            </ListGroup.Item>
+                            </ListGroup.Item> */}
                             <ListGroup.Item>
                                 <Row>
                                     <Col>Total</Col>

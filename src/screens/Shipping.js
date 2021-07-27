@@ -13,14 +13,14 @@ const Shipping = ({ history }) => {
     const cart = useSelector(state => state.cart)
     const { shippingAddress } = cart
 
-    const [phone, setPhone] = useState(shippingAddress.phone)
-    const [address, setAddress] = useState(shippingAddress.address)
     const [city, setCity] = useState(shippingAddress.postalCode)
     const [postalCode, setPostalCode] = useState(shippingAddress.city)
     const [country, setCountry] = useState(shippingAddress.country)
-
+    
     const detailsOfUser = useSelector(state => state.detailsOfUser)
     const { loading: loadingDetail, error: errorDetail, detail } = detailsOfUser
+    const [phone, setPhone] = useState(detail[0].udetailPhone)
+    const [address, setAddress] = useState(detail[0].udetailAddress)
 
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
@@ -35,18 +35,8 @@ const Shipping = ({ history }) => {
     }, [dispatch, history, userInfo]);              
 
     
-
-    // useEffect(() => {
-    //     if (!user) {
-    //       dispatch({ type: USER_UPDATE_PROFILE_RESET });
-    //       dispatch(getUserDetails(userInfo.id));
-    //       dispatch(getMyListOrder(userInfo.id))
-    //     } else {
-    //       setUsername(user.data.userName);
-    //       setEmail(user.data.userEmail);
-    //     }
-    //   }, [dispatch, userInfo.id, user]);
-
+    console.log(detail);
+    
     const submitHandler = (e) => {
         e.preventDefault()
         const data = {
