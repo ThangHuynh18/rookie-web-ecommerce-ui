@@ -54,16 +54,7 @@ const PlaceOrder = ({ history }) => {
           };
         const cartItems=cart.cartItems
         dispatch(createOrder(data,cartItems))
-        // dispatch(createOrder({
-        //     orderItems: cart.cartItems,
-        //     shippingAddress: cart.shippingAddress,
-        //     paymentMethod: cart.paymentMethod,
-        //     itemsPrice: cart.itemsPrice,
-        //     shippingPrice: cart.shippingPrice,
-        //     taxPrice: cart.taxPrice,
-        //     totalPrice: cart.totalPrice
-
-        // }))
+    
     }
 
     return (

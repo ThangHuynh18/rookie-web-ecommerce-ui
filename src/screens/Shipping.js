@@ -19,8 +19,10 @@ const Shipping = ({ history }) => {
     
     const detailsOfUser = useSelector(state => state.detailsOfUser)
     const { loading: loadingDetail, error: errorDetail, detail } = detailsOfUser
-    const [phone, setPhone] = useState(detail[0].udetailPhone)
-    const [address, setAddress] = useState(detail[0].udetailAddress)
+    // const [phone, setPhone] = useState(detail[0].udetailPhone)
+    // const [address, setAddress] = useState(detail[0].udetailAddress)
+    const [phone, setPhone] = useState('')
+    const [address, setAddress] = useState('')
 
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
@@ -58,33 +60,43 @@ const Shipping = ({ history }) => {
             <Form onSubmit={submitHandler}>
                 <Form.Group controlId="address">
                     <Form.Label>Address</Form.Label>
-                    <select className="form-control" id="address" value={address} onChange={(e) => setAddress(e.target.value)}>
-                                {  loadingDetail ? <h5><Loader /></h5> : errorDetail ? <h5><Message variant="danger">{errorDetail}</Message></h5> : 
-                                    detail.map(item =>  <option key={item.udetail_id} value={item.udetailAddress}>{item.udetailAddress}</option>)}
-                         </select>
-                    {/* <Form.Control
-                        type="text"
-                        placeholder="Enter your address"
-                        value={address}
-                        required
-                        onChange={(e) => setAddress(e.target.value)}>
+                    {detail == null ? (
+                            <select className="form-control" id="address" value={address} onChange={(e) => setAddress(e.target.value)}>
+                                    {  loadingDetail ? <h5><Loader /></h5> : errorDetail ? <h5><Message variant="danger">{errorDetail}</Message></h5> : 
+                                        detail.map(item =>  <option key={item.udetail_id} value={item.udetailAddress}>{item.udetailAddress}</option>)}
+                            </select>
+                         )
+                         :(
+                            <Form.Control
+                                type="text"
+                                placeholder="Enter your address"
+                                value={address}
+                                required
+                                onChange={(e) => setAddress(e.target.value)}>
 
-                    </Form.Control> */}
+                            </Form.Control>
+                         )
+                }
                 </Form.Group>
                 <Form.Group controlId="phone">
                     <Form.Label>Phone</Form.Label>
-                    <select className="form-control" id="phone" value={phone} onChange={(e) => setPhone(e.target.value)}>
-                                {  loadingDetail ? <h5><Loader /></h5> : errorDetail ? <h5><Message variant="danger">{errorDetail}</Message></h5> : 
-                                    detail.map(item =>  <option key={item.udetail_id} value={item.udetailPhone}>{item.udetailPhone}</option>)}
-                         </select>
-                    {/* <Form.Control
-                        type="number"
-                        placeholder="Enter your phone"
-                        value={phone}
-                        required
-                        onChange={(e) => setPhone(e.target.value)}>
+                    {detail == null ? (
+                            <select className="form-control" id="phone" value={phone} onChange={(e) => setPhone(e.target.value)}>
+                                        {  loadingDetail ? <h5><Loader /></h5> : errorDetail ? <h5><Message variant="danger">{errorDetail}</Message></h5> : 
+                                            detail.map(item =>  <option key={item.udetail_id} value={item.udetailPhone}>{item.udetailPhone}</option>)}
+                                </select>
+                          )
+                          :(
+                            <Form.Control
+                                type="number"
+                                placeholder="Enter your phone"
+                                value={phone}
+                                required
+                                onChange={(e) => setPhone(e.target.value)}>
 
-                    </Form.Control> */}
+                            </Form.Control>
+                    )
+                }
                 </Form.Group>
                 {/* <Form.Group controlId="city">
                     <Form.Label>City</Form.Label>

@@ -6,6 +6,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 import { register } from '../actions/userActions.js'
+import { useAlert } from 'react-alert'
 
 const Register = ({ location, history }) => {
     const [username, setUsername] = useState('')
@@ -15,18 +16,21 @@ const Register = ({ location, history }) => {
     const [confirmPassword, setConfirmPassword] = useState('')
     const [message, setMessage] = useState(null)
 
+    const alert = useAlert()
     const dispatch = useDispatch()
 
     const userRegister = useSelector(state => state.userRegister)
-    const { loading, error, userInfo } = userRegister
+    const { loading, error, msg } = userRegister
 
     const redirect = location.search ? location.search.split('=')[1] : '/'
 
     useEffect(() => {
-        if (userInfo) {
-            history.push(redirect)
+        if (msg === 'User registered successfully!') {
+            alert.success("Register successfully")
+
+            history.push('/login')
         }
-    }, [history, userInfo, redirect])
+    }, [history, msg])
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -99,7 +103,7 @@ const Register = ({ location, history }) => {
             <Row className="py-3">
                 <Col>
                     Have an Account?   <Link className="text-decoration-none" style={{ color: "green" }}
-                        to={redirect ? `/login?redirect=${redirect}` : '/login'}>
+                        to='/login'>
                         Login
                     </Link>
                 </Col>

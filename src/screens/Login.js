@@ -6,6 +6,7 @@ import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
 import { login } from '../actions/userActions.js'
+import { useAlert } from 'react-alert'
 
 const Login = ({ location, history }) => {
 
@@ -13,6 +14,7 @@ const Login = ({ location, history }) => {
     const [password, setPassword] = useState('')
 
     const dispatch = useDispatch()
+    const alert = useAlert()
 
     const userLogin = useSelector(state => state.userLogin)
     const { loading, error, userInfo } = userLogin
@@ -21,6 +23,7 @@ const Login = ({ location, history }) => {
 
     useEffect(() => {
         if (userInfo) {
+            alert.success("Login successfully")
             history.push(redirect)
         }
     }, [history, userInfo, redirect])
@@ -69,7 +72,7 @@ const Login = ({ location, history }) => {
             <Row className="py-3">
                 <Col>
                     New Customer?   <Link className="text-decoration-none" style={{ color: "red" }}
-                        to={redirect ? `/register?redirect=${redirect}` : '/register'}>
+                        to='/register'>
                         Register
                     </Link>
                 </Col>
