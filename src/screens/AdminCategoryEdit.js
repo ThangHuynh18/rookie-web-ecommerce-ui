@@ -56,7 +56,7 @@ const AdminUserEdit = ({ match, history }) => {
       </Link>
       <FormContainer>
         <h3>Edit Category</h3>
-        {loadingUpdate && <Loader />}{errorUpdate && ( <span><Message variant="danger">{errorUpdate}</Message></span>)}
+        {loadingUpdate && <Loader />}{errorUpdate && ( <span><Message variant="danger">Update failed. Input lack of field</Message></span>)}
         {loading ? ( <Loader />) : error ? ( <span><Message variant="danger">{error}</Message> </span>
         ) : (
           <Form onSubmit={submitHandler}>
@@ -78,7 +78,7 @@ const AdminUserEdit = ({ match, history }) => {
                         
                     </Form.Group>
             <div className="d-grid gap-2" style={{ marginTop: "16px" }}>
-              <Button type="submit" variant="primary">
+              <Button type="submit" variant="primary" disabled={name === null}>
                 Update
               </Button>
             </div>

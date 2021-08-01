@@ -62,7 +62,7 @@ const AdminUserEdit = ({ match, history }) => {
         {loadingUpdate && <Loader />}
         {errorUpdate && (
           <span>
-            <Message variant="danger">{errorUpdate}</Message>
+            <Message variant="danger">Update failed. Input lack of field</Message>
           </span>
         )}
         {loading ? (
@@ -101,7 +101,7 @@ const AdminUserEdit = ({ match, history }) => {
               ></Form.Control>
             </Form.Group>
             <div className="d-grid gap-2" style={{ marginTop: "16px" }}>
-              <Button type="submit" variant="primary">
+              <Button type="submit" variant="primary" disabled={name === '' || email === '' || password === ''}>
                 Update
               </Button>
             </div>

@@ -11,16 +11,22 @@ import {
 
 import axios from 'axios'
 
-export const listProducts = (keyword = '', currentPage = 1) => async (dispatch) => {
+export const listProducts = (keyword = '', currentPage = 1, cateId, brandId) => async (dispatch) => {
     try {
         dispatch({ type: PRODUCT_LIST_REQUEST })
         currentPage--
-        console.log('a '+ currentPage);
         let url = `/api/products/pagination?search=${keyword}&page=${currentPage}`
+        if (cateId) {
+            url = `/api/products/pagination?page=${currentPage}&cateId=${cateId}`
+            
 
-        // if(keyword !== ''){
-        //     url = `/api/products/search?keyword=${keyword}&page=${currentPage}`
-        // }
+        }
+        if (brandId) {
+            url = `/api/products/pagination?page=${currentPage}&brandId=${brandId}`
+        }
+        if (cateId && brandId) {
+            url = `/api/products/pagination?page=${currentPage}&cateId=${cateId}&brandId=${brandId}`
+        }
         const { data } = await axios.get(url)
         dispatch({
             type: PRODUCT_LIST_SUCCESS,

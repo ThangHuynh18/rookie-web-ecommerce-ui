@@ -74,7 +74,14 @@ const Cart = ({ match, location, history }) => {
                                         </Row>
                                     </ListGroup.Item>
                                 ))}
+                                <Row> 
+                                <Col md={3}></Col>
+                                <Col md={3}></Col>
+                                   <Col md={3}> <h4>Total items: </h4></Col>
+                                   <Col md={3}><h4>{cartItems.reduce((acc, item) => acc + item.qty, 0)}</h4></Col>
+                                </Row>
                             </ListGroup>
+                            
                         )
                 }
             </Col>

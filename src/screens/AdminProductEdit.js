@@ -27,6 +27,7 @@ const AdminUpdateEdit = ({ match, history }) => {
     const [brand, setBrand] = useState(0)
     const [imageDTOS, setImageDTOS] = useState([])
     const [image, setImage] = useState('')
+    const [message, setMessage] = useState(null)
     const [uploading, setUploading] = useState(false)
 
     const productUpdate = useSelector(state => state.productUpdate)
@@ -114,7 +115,10 @@ const AdminUpdateEdit = ({ match, history }) => {
         })
         data.imageDTOS.push({imageLink: image})
         console.log(data)
-        dispatch(updateProduct(data))
+        if(price <= 0 || qty <= 0 ){
+            setMessage('Price and Quantity should not be less than 0')
+        } else {
+            dispatch(updateProduct(data))}
 
     }
 
@@ -125,7 +129,8 @@ const AdminUpdateEdit = ({ match, history }) => {
             <FormContainer>
                 <h3>Edit Product</h3>
                 {loadingUpdate && <Loader />}
-                {errorUpdate && <span><Message variant="danger">{errorUpdate}</Message></span>}
+                {message && <span><Message variant="danger">{message}</Message></span>}
+                {errorUpdate && <span><Message variant="danger">Update failed. Input lack of field</Message></span>}
                 {loading ? <Loader /> : error ? <span><Message variant="danger">{error}</Message></span> : (
                     <Form onSubmit={submitHandler}>
                     <Form.Group controlId="name">
@@ -210,7 +215,8 @@ const AdminUpdateEdit = ({ match, history }) => {
                         <div className="d-grid gap-2" style={{ marginTop: "16px" }}>
                             <Button
                                 type="submit"
-                                variant="primary">
+                                variant="primary"
+                                disabled={name === null || price === 0 || description === null || qty === 0 || category === 0 || brand ===0 || image.url === null}>
                                 Update
                             </Button>
                         </div>

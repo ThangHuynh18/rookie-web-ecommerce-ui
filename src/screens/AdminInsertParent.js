@@ -5,21 +5,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
-import { createCategory } from '../actions/categoryActions'
+import { createParent } from '../actions/categoryActions'
 
-const AdminInsertCategory = ({ location, history }) => {
+const AdminInsertParent = ({ location, history }) => {
     const [name, setName] = useState('')
-    const [parent, setParent] = useState(0);
     
     const [message, setMessage] = useState(null)
 
     const dispatch = useDispatch()
 
-    const categoryCreate = useSelector(state => state.categoryCreate)
-    const { loading, error, success: successCreate } = categoryCreate
-
-    const parentList = useSelector(state => state.parentList)
-    const {loading: loadingParent, error: errorParent, parents } = parentList
+    const parentCreate = useSelector(state => state.parentCreate)
+    const { loading, error, success: successCreate } = parentCreate
 
     useEffect(() => {
         if (successCreate) {
@@ -30,16 +26,15 @@ const AdminInsertCategory = ({ location, history }) => {
     const submitHandler = (e) => {
         e.preventDefault()
         const data = {
-            categoryName: name,
-            parent_id: parent
+            categoryName: name
         }
-        dispatch(createCategory(data))
+        dispatch(createParent(data))
         
     }
 
     return (
         <FormContainer>
-            <h3>Insert Category</h3>
+            <h3>Insert Parent Category</h3>
             {message && <span><Message variant="danger">{message}</Message></span>}
             {error && <span><Message variant="danger">Create failed. Input lack of field</Message></span>}
             {loading && <h5><Loader /></h5>}
@@ -54,20 +49,11 @@ const AdminInsertCategory = ({ location, history }) => {
 
                     </Form.Control>
                 </Form.Group>
-                <Form.Group controlId="parent" style={{ marginTop: "8px" }}>
-                        <Form.Label>Parent</Form.Label>
-                         <select className="form-control" id="category" value={parent} onChange={(e) => setParent(e.target.value)}>
-                                {  loadingParent ? <h5><Loader /></h5> : errorParent ? <h5><Message variant="danger">{errorParent}</Message></h5> : 
-                                    parents.map(item =>  <option key={item.category_id} value={item.category_id}>{item.categoryName}</option>)}
-                         </select>
-                        
-                    </Form.Group>
              
-            
                 <div className="d-grid gap-2" style={{ marginTop: "16px" }}>
                     <Button
                         type="submit"
-                        variant="primary"  disabled={name === '' || parent === 0}>
+                        variant="primary"  disabled={name === ''}>
                         Insert
                     </Button>
                 </div>
@@ -77,4 +63,4 @@ const AdminInsertCategory = ({ location, history }) => {
     )
 }
 
-export default AdminInsertCategory
+export default AdminInsertParent

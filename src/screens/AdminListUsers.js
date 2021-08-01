@@ -19,7 +19,7 @@ const AdminListUsers = ({ history }) => {
     const { userInfo } = userLogin
 
     const userDelete = useSelector(state => state.userDelete)
-    const { success: successDelete } = userDelete
+    const { success: successDelete,  error: errorDelete} = userDelete
 
     useEffect(() => {
         if (userInfo && userInfo.roles[0] === 'admin') {
@@ -115,6 +115,7 @@ const AdminListUsers = ({ history }) => {
                     </Button>
                 </Col>
             </Row>
+            {errorDelete && <h5><Message variant="danger">Delete failed. This user already has order</Message></h5>}
             {
                 loading ? <h5><Loader /></h5> : error ? <h5><Message variant="danger">{error}</Message></h5> : (
 

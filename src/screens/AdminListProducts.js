@@ -126,10 +126,10 @@ const AdminListProducts = ({ history, match }) => {
         return data
     }
     const deleteHandler = (id) => {
-        if (window.confirm('Are you sure?'))
+        if (window.confirm('Are you sure?')){
             dispatch(deleteProduct(id))
              if(successDelete){alert.success("Delete product successfully")}
-    }
+    }}
 
     const createProductHandler = () => {
         //dispatch(createProduct())
@@ -150,9 +150,9 @@ const AdminListProducts = ({ history, match }) => {
                 </Col>
             </Row>
             {/* {loadingDelete && <h5><Loader /></h5>} */}
-            {errorDelete && <h5><Message variant="danger">{errorDelete}</Message></h5>}
+            {errorDelete && <h5><Message variant="danger">Delete failed. The product is already in the order</Message></h5>}
             {loadingCreate && <h5><Loader /></h5>}
-            {errorCreate && <h5><Message variant="danger">{errorCreate}</Message></h5>}
+            {errorCreate && <h5><Message variant="danger">Create failed. Input lack of field</Message></h5>}
             {
                 loading ? <h5><Loader /></h5> : error ? <h5><Message variant="danger">{error}</Message></h5> : (
 

@@ -108,7 +108,10 @@ const AdminInsertProduct = ({ location, history }) => {
         })
         data.imageDTOS.push({imageLink: image})
         console.log(data)
-        dispatch(createProduct(data))
+        if(price <= 0 || qty <= 0 ){
+            setMessage('Price and Quantity should not be less than 0')
+        } else {
+            dispatch(createProduct(data))}
 
     }
 
@@ -116,7 +119,7 @@ const AdminInsertProduct = ({ location, history }) => {
         <FormContainer>
             <h3>Insert Product</h3>
             {message && <span><Message variant="danger">{message}</Message></span>}
-            {error && <span><Message variant="danger">{error}</Message></span>}
+            {error && <span><Message variant="danger">Create failed. Input lack of field</Message></span>}
             {loading && <h5><Loader /></h5>}
             <Form onSubmit={submitHandler}>
                 <Form.Group controlId="name">
@@ -193,7 +196,8 @@ const AdminInsertProduct = ({ location, history }) => {
                 <div className="d-grid gap-2" style={{ marginTop: "16px" }}>
                     <Button
                         type="submit"
-                        variant="primary">
+                        variant="primary"
+                        disabled={name === null || price === 0 || description === null || qty === 0 || category === 0 || brand ===0 || image.url === null}>
                         Insert
                     </Button>
                 </div>

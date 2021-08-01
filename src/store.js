@@ -16,7 +16,7 @@ import {
     detailsOfUserReducer
 } from './reducers/userReducers.js'
 
-import {categoryListReducer, parentListReducer, categoriesByParentReducer, categoryDetailsReducer, categoryCreateReducer, categoryDeleteReducer, categoryUpdateReducer} from './reducers/categoryReducers'
+import {categoryListReducer, parentListReducer, categoriesByParentReducer, categoryDetailsReducer, categoryCreateReducer, parentCreateReducer, categoryDeleteReducer, categoryUpdateReducer} from './reducers/categoryReducers'
 import {brandListReducer} from './reducers/brandReducers'
 
 const reducer = combineReducers({
@@ -58,6 +58,7 @@ const reducer = combineReducers({
     categoryCreate: categoryCreateReducer,
     categoryDelete: categoryDeleteReducer,
     categoryUpdate: categoryUpdateReducer,
+    parentCreate: parentCreateReducer,
 
 })
 

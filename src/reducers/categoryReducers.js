@@ -6,7 +6,8 @@ import {
     CATEGORY_DELETE_REQUEST, CATEGORY_DELETE_SUCCESS, CATEGORY_DELETE_FAIL,
     CATEGORY_UPDATE_REQUEST, CATEGORY_UPDATE_SUCCESS, CATEGORY_UPDATE_FAIL, CATEGORY_UPDATE_RESET,
     CATEGORY_PARENT_LIST_REQUEST, CATEGORY_PARENT_LIST_SUCCESS, CATEGORY_PARENT_LIST_FAIL,
-    CATEGORY_BY_PARENT_REQUEST, CATEGORY_BY_PARENT_SUCCESS, CATEGORY_BY_PARENT_FAIL
+    CATEGORY_BY_PARENT_REQUEST, CATEGORY_BY_PARENT_SUCCESS, CATEGORY_BY_PARENT_FAIL,
+    PARENT_CREATE_REQUEST, PARENT_CREATE_SUCCESS, PARENT_CREATE_FAIL, PARENT_CREATE_RESET
 } from '../constants/categoryConstants';
 
 export const categoryListReducer = (state = { categories: [] }, action) => {
@@ -83,6 +84,22 @@ export const categoryCreateReducer = (state = {}, action) => {
         case CATEGORY_CREATE_FAIL:
             return { loading: false, error: action.payload }
         case CATEGORY_CREATE_RESET:
+            return {}
+
+        default:
+            return state
+    }
+}
+
+export const parentCreateReducer = (state = {}, action) => {
+    switch (action.type) {
+        case PARENT_CREATE_REQUEST:
+            return { loading: true }
+        case PARENT_CREATE_SUCCESS:
+            return { loading: false, success: true, parent: action.payload }
+        case PARENT_CREATE_FAIL:
+            return { loading: false, error: action.payload }
+        case PARENT_CREATE_RESET:
             return {}
 
         default:

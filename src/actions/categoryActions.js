@@ -7,7 +7,8 @@ import {
     CATEGORY_DELETE_REQUEST, CATEGORY_DELETE_SUCCESS, CATEGORY_DELETE_FAIL,
     CATEGORY_UPDATE_REQUEST, CATEGORY_UPDATE_SUCCESS, CATEGORY_UPDATE_FAIL, CATEGORY_UPDATE_RESET,
     CATEGORY_PARENT_LIST_REQUEST, CATEGORY_PARENT_LIST_SUCCESS, CATEGORY_PARENT_LIST_FAIL,
-    CATEGORY_BY_PARENT_REQUEST, CATEGORY_BY_PARENT_SUCCESS, CATEGORY_BY_PARENT_FAIL
+    CATEGORY_BY_PARENT_REQUEST, CATEGORY_BY_PARENT_SUCCESS, CATEGORY_BY_PARENT_FAIL,
+    PARENT_CREATE_REQUEST, PARENT_CREATE_SUCCESS, PARENT_CREATE_FAIL,
 } from '../constants/categoryConstants';
 
 export const listCategories = () => async (dispatch) => {
@@ -125,6 +126,35 @@ export const createCategory = (cateData) => async (dispatch, getState) => {
     } catch (error) {
         dispatch({
             type: CATEGORY_CREATE_FAIL,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message,
+        })
+    }
+}
+
+export const createParent = (parentData) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: PARENT_CREATE_REQUEST
+        })
+
+        const { userLogin: { userInfo } } = getState()
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.accessToken}`
+            },
+        }
+        
+        const { data } = await axios.post(`/api/categories/parent`, parentData, config)
+
+        dispatch({
+            type: PARENT_CREATE_SUCCESS,
+            payload: data
+        })
+
+    } catch (error) {
+        dispatch({
+            type: PARENT_CREATE_FAIL,
             payload: error.response && error.response.data.message ? error.response.data.message : error.message,
         })
     }

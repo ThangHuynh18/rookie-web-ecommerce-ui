@@ -4,6 +4,7 @@ import { Button, Table, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+import { CATEGORY_CREATE_RESET } from '../constants/categoryConstants'
 import { listParent, deleteCategory, listCategoriesByParent } from '../actions/categoryActions'
 import { useAlert } from 'react-alert'
 import { MDBDataTableV5 } from 'mdbreact'
@@ -21,17 +22,21 @@ const AdminLisCategory = ({ history }) => {
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
 
+    const categoryCreate = useSelector(state => state.categoryCreate)
+    const { loading: loadingCreate, error: errorCreate, success: successCreate, category: categoryCreated } = categoryCreate
+
     const categoryDelete = useSelector(state => state.categoryDelete)
-    const { success: successDelete } = categoryDelete
+    const { success: successDelete,  error: errorDelete } = categoryDelete
 
     useEffect(() => {
+        dispatch({ type: CATEGORY_CREATE_RESET })
         if (userInfo && userInfo.roles[0] === 'admin') {
             dispatch(listParent())
         }
         else {
             history.push('/login')
         }
-    }, [dispatch, history, successDelete, userInfo])
+    }, [dispatch, history, successDelete, userInfo, successCreate, categoryCreated])
 
     const deleteHandler = (id) => {
         if (window.confirm('Are you sure?'))
@@ -41,6 +46,10 @@ const AdminLisCategory = ({ history }) => {
 
     const createCateHandler = () => {
         history.push('/admin/category/insert')
+    }
+
+    const createParentHandler = () => {
+        history.push('/admin/parent/category/insert')
     }
 
     const categoryHandler = (parentId) => {
@@ -157,16 +166,22 @@ const AdminLisCategory = ({ history }) => {
                     <h3>Categories</h3>
                 </Col>
                 <Col xl={2}> 
-                    <Button size="sm" variant="outline-primary" onClick={createCateHandler}>
+                    {/* <Button size="sm" variant="outline-primary" onClick={createCateHandler}>
                         <i className="fas fa-plus"> Create Category</i>
-                    </Button>
+                    </Button> */}
                 </Col>
             </Row>
+            {errorDelete && <h5><Message variant="danger">Delete failed. This category already has product or subcategory</Message></h5>}
+            {loadingCreate && <h5><Loader /></h5>}
+            {errorCreate && <h5><Message variant="danger">Create failed. Input lack of field</Message></h5>}
             {
                 loading ? <h5><Loader /></h5> : error ? <h5><Message variant="danger">{error}</Message></h5> : (
                     <Row>
                         <Col sm={6}>
                             <h5>Parent Categories</h5>
+                            <Button size="sm" variant="outline-primary" onClick={createParentHandler}>
+                                <i className="fas fa-plus"> Create Parent Category</i>
+                            </Button>
                             <MDBDataTableV5
                                 data={setLisParent()}
                                 className="px-3"
@@ -182,6 +197,9 @@ const AdminLisCategory = ({ history }) => {
                         </Col>
                         <Col sm={6}>
                         <h5>Sub Categories</h5>
+                            <Button size="sm" variant="outline-primary" onClick={createCateHandler}>
+                                 <i className="fas fa-plus"> Create Sub Category</i>
+                            </Button>
                             <MDBDataTableV5
                                 data={setLisCateByParent()}
                                 className="px-3"

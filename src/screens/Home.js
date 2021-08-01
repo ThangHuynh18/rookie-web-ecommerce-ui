@@ -1,10 +1,15 @@
 import React, { useEffect ,useState} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Row, Col } from 'react-bootstrap'
+import { Container, Navbar, Nav, NavDropdown ,Form , FormControl, Button, Dropdown} from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 import Product from '../components/Product.js'
 import Loader from '../components/Loader.js'
 import Message from '../components/Message.js'
 import { listProducts,listProductCategories, listProductBrands } from '../actions/productActions.js'
+import { listBrands } from '../actions/brandActions.js'
+import { listCategories } from '../actions/categoryActions.js'
+
 import Pagination from "react-js-pagination"
 
 const Home = ({match}) => {
@@ -12,19 +17,57 @@ const Home = ({match}) => {
     const productList = useSelector(state => state.productList)
     const { loading, error, products, totalItems } = productList
     const [currentPage, setCurrentPage] = useState(1)
+    const [cateId, setCateId] = useState('')
+    const [brandId, setBrandId] = useState('')
+    const [cateName, setCateName] = useState('')
+    const [brandName, setBrandName] = useState('')
     
     const { loading: loadingCategory, error: errorCategory, productsCate } = useSelector(state => state.productsCategory)
     const category_id = match.params.category_id
     
     const brand_id = match.params.brand_id
+
+    const { categories, error: errorBCategoryList, loading: loadingCategoryList }  = useSelector(state => state.categoryList)
+    const { brands, error: errorBrandList, loading: loadingBrandList }  = useSelector(state => state.brandList)
+
     const { productBrands, error: errorProductBrand, loading: loadingProductBrand }  = useSelector(state => state.productBrandList)
     const keyword = match.params.keyword
+    
     useEffect(() => {
-        dispatch(listProducts(keyword,currentPage))
-        dispatch(listProductCategories(category_id))
-        dispatch(listProductBrands(brand_id))
-        console.log(currentPage);
-    }, [dispatch, keyword, currentPage, category_id, brand_id])
+        dispatch(listCategories())
+        dispatch(listBrands())
+        if(categories){
+            console.log(categories);
+            for (let index = 0; index < categories.length; index++) {
+                if(cateId === categories[index].category_id){
+                    console.log(categories[index].category_id);
+                    return setCateName(categories[index].categoryName)
+                }
+            }
+        }
+        if(brands){
+            console.log(brands);
+
+            for (let index = 0; index < brands.length; index++) {
+                if(brandId === brands[index].brand_id){
+                    console.log(brands[index].brand_id)
+                    return setBrandName(brands[index].brandName)
+                }
+            }
+        }
+            
+        
+        dispatch(listProducts(keyword,currentPage, cateId, brandId))
+        if(category_id){
+
+            dispatch(listProductCategories(category_id))
+        }
+        if(brand_id){
+
+            dispatch(listProductBrands(brand_id))
+        }
+       
+    }, [dispatch, keyword, currentPage, brand_id, category_id, cateId, brandId, cateName, brandName])
 
     function setCurrentPageNo(pageNumber) {
         
@@ -42,7 +85,7 @@ const Home = ({match}) => {
                 {
                     productsCate && loadingCategory ? <h5><Loader /></h5> : errorCategory ? <h5><Message variant="danger">{errorCategory}</Message></h5> :
                         <Row>
-                            {productsCate.map(product => ( 
+                            {productsCate && productsCate.map(product => ( 
                                 <Col key={product.product_id} sm={12} md={6} lg={4} xl={3}>
                                     <Product product={product} />
                                 </Col>
@@ -60,7 +103,7 @@ const Home = ({match}) => {
                 {
                     loadingProductBrand ? <h5><Loader /></h5> : errorProductBrand ? <h5><Message variant="danger">{errorProductBrand}</Message></h5> :
                         <Row>
-                            {productBrands.map(product => ( 
+                            {productBrands && productBrands.map(product => ( 
                                 <Col key={product.product_id} sm={12} md={6} lg={4} xl={3}>
                                     <Product product={product} />
                                 </Col>
@@ -73,37 +116,110 @@ const Home = ({match}) => {
             :
             (
                 <>
-                <h3>Latest Products</h3>
-                {
-                    loading ? <h5><Loader /></h5> : error ? <h5><Message variant="danger">{error}</Message></h5> :
-                    <>
-                        <Row>
-                            {products.map(product => ( 
-                                <Col key={product.product_id} sm={12} md={6} lg={4} xl={3}>
-                                    <Product product={product} />
-                                </Col>
-                            ))}
-                        </Row>
+                   
+                    <h3>Latest Products</h3>
+                    
+                    <Row>
+                        <Col sm={12} md={6} lg={4} xl={3}>
+                        <h4>Filters</h4>
+                        <h5>Categories</h5>
+                        <>
+                            <p 
+                                onClick={() => setCateId('')}
+                                style={{cursor: 'pointer'}}>All</p>
+                            {
+                                categories && categories.map(item => (
+                                    <p key={item.category_id}  onClick={() => setCateId(item.category_id)} style={{cursor: 'pointer'}}>{item.categoryName}</p>
+                                   
+                                ))
+                            }
+                        </>
+                        <h5>Brands</h5>
+                        <>
+                            <p 
+                                onClick={() => setBrandId('')}  
+                                style={{cursor: 'pointer'}}>All</p>
+                            {
+                                brands && brands.map(item => (
+                                    <p key={item.brand_id}  onClick={() => setBrandId(item.brand_id)} style={{cursor: 'pointer'}}>{item.brandName}</p>
+                                   
+                                ))
+                            }
+                        </>
+                        </Col>
+                        <Col sm={12} md={6} lg={4} xl={9}>
                         
+                            {
+                            loading ? <h5><Loader /></h5> : error ? <h5><Message variant="danger">{error}</Message></h5> :
+                            <>
+                                {
+                                    cateId && brandId ? <h5>Filter by: {cateName}, {brandName}</h5>
+                                    : brandId ? <h4>Filter by: {brandName}</h4> : cateId ? <h4>Filter by: {cateName}</h4> 
+                                    : null
+                                }
+                                <Row>
+                                    {products && products.map(product => ( 
+                                        <Col key={product.product_id} sm={12} md={6} lg={4} xl={4}>
+                                            <Product product={product} />
+                                        </Col>
+                                    ))}
+                                </Row>
+                                
 
-                                <div className="product-pagination">
-                                    <Pagination
-                                        activePage={currentPage}
-                                        itemsCountPerPage={8}
-                                        totalItemsCount={totalItems}
-                                        onChange={setCurrentPageNo}
-                                        nextPageText={'Next'}
-                                        prevPageText={'Prev'}
-                                        firstPageText={'First'}
-                                        lastPageText={'Last'}
-                                        itemClass="page-item"
-                                        linkClass="page-link"
-                                    />
-                                </div>
-                            
-                        
-                    </>
-                }
+                                        <div className="product-pagination">
+                                            <Pagination
+                                                activePage={currentPage}
+                                                itemsCountPerPage={8}
+                                                totalItemsCount={totalItems}
+                                                onChange={setCurrentPageNo}
+                                                nextPageText={'Next'}
+                                                prevPageText={'Prev'}
+                                                firstPageText={'First'}
+                                                lastPageText={'Last'}
+                                                itemClass="page-item"
+                                                linkClass="page-link"
+                                            />
+                                        </div>
+                                    
+                                
+                            </>
+                        }
+                        </Col>
+                    </Row>                      
+                            {/* <>
+                                <Dropdown className="d-inline mx-2">
+                                    <Dropdown.Toggle id="dropdown-autoclose-true">
+                                    Categories
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu>
+                                    {
+                                        categories && categories.map(item => (
+                                            <Dropdown.Item key={item.category_id}  onClick={() => setCateId(item.category_id)}>{item.categoryName}</Dropdown.Item>
+                                           
+                                        ))
+                                    }
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                                <Dropdown className="d-inline mx-2">
+                                    <Dropdown.Toggle id="dropdown-autoclose-true">
+                                    Brands
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu>
+                                    {
+                                        brands && brands.map(item => (
+                                            <Dropdown.Item key={item.brand_id}  onClick={() => setBrandId(item.brand_id)}>{item.brandName}</Dropdown.Item>
+                                           
+                                        ))
+                                    }
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                                
+                                <h3 onClick={() => {setBrandId(''); setCateId('')}}>Clear ALL</h3>
+                                    
+                            </> */}
+               
                 </>
             )
         }           

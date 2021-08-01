@@ -60,7 +60,7 @@ const Shipping = ({ history }) => {
             <Form onSubmit={submitHandler}>
                 <Form.Group controlId="address">
                     <Form.Label>Address</Form.Label>
-                    {detail == null ? (
+                    {detail !== null ? (
                             <select className="form-control" id="address" value={address} onChange={(e) => setAddress(e.target.value)}>
                                     {  loadingDetail ? <h5><Loader /></h5> : errorDetail ? <h5><Message variant="danger">{errorDetail}</Message></h5> : 
                                         detail.map(item =>  <option key={item.udetail_id} value={item.udetailAddress}>{item.udetailAddress}</option>)}
@@ -80,7 +80,7 @@ const Shipping = ({ history }) => {
                 </Form.Group>
                 <Form.Group controlId="phone">
                     <Form.Label>Phone</Form.Label>
-                    {detail == null ? (
+                    {detail !== null ? (
                             <select className="form-control" id="phone" value={phone} onChange={(e) => setPhone(e.target.value)}>
                                         {  loadingDetail ? <h5><Loader /></h5> : errorDetail ? <h5><Message variant="danger">{errorDetail}</Message></h5> : 
                                             detail.map(item =>  <option key={item.udetail_id} value={item.udetailPhone}>{item.udetailPhone}</option>)}

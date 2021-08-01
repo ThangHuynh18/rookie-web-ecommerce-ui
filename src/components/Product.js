@@ -25,9 +25,19 @@ const Product = ({product}) => {
                         value={product.ratingDTOS[0].ratingNumber}/> 
                 </Card.Text> */}
                 <Card.Text as='h4'><NumberFormat value={product.productPrice} displayType={'text'} thousandSeparator={true} suffix={'đ'} /></Card.Text>
-                <Link to={`/product/${product.product_id}`}>
+                {/* <Link to={`/product/${product.product_id}`}>
                     <Button size="sm" variant="outline-primary">View more</Button>
+                </Link> */}
+                <Link to={`/cart/${product.product_id}?qty=1`}>
+                        <Button
+                                
+                                type="submit"
+                                variant="primary"
+                                >
+                                Add To Cart
+                       </Button>
                 </Link>
+                
                 
             </Card.Body>
         </Card>
