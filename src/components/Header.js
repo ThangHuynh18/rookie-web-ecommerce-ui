@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Container, Navbar, Nav, NavDropdown ,Form , FormControl, Button} from "react-bootstrap";
+import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { logout } from "../actions/userActions.js";
 import Loader from './Loader'
@@ -21,11 +21,15 @@ const Header = ({history}) => {
 
   const parentList = useSelector(state => state.parentList)
     const {loading: loadingParent, error: errorParent, parents } = parentList
+
+
+    const cart = useSelector(state => state.cart)
+    const { cartItems } = cart
+
   
   const logoutHandler = () => {
     dispatch(logout())
   }
-
     useEffect(() => {
         dispatch(listCategories())
         //dispatch(listParent())
@@ -84,11 +88,13 @@ const Header = ({history}) => {
               {/* <NavDropdown.Item href="#action/3.1">A</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item> */}
+            
             </NavDropdown>
               <LinkContainer to="/cart">
                 <Nav.Link>
-                  <i class="fas fa-shopping-cart"></i> Cart
+                  <i class="fas fa-shopping-cart">{cartItems ? cartItems.length : 0}</i> Cart
                 </Nav.Link>
+                {/* <Badge count={cartItems.length} size='small'></Badge> */}
               </LinkContainer>
               {userInfo ? (
                 <NavDropdown title={userInfo.username} id="username">

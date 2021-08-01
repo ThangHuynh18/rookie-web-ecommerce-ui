@@ -4,7 +4,7 @@ import { Button, Table, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { CATEGORY_CREATE_RESET } from '../constants/categoryConstants'
+import { CATEGORY_CREATE_RESET , CATEGORY_DELETE_RESET} from '../constants/categoryConstants'
 import { listParent, deleteCategory, listCategoriesByParent } from '../actions/categoryActions'
 import { useAlert } from 'react-alert'
 import { MDBDataTableV5 } from 'mdbreact'
@@ -30,6 +30,7 @@ const AdminLisCategory = ({ history }) => {
 
     useEffect(() => {
         dispatch({ type: CATEGORY_CREATE_RESET })
+        dispatch({ type: CATEGORY_DELETE_RESET })
         if (userInfo && userInfo.roles[0] === 'admin') {
             dispatch(listParent())
         }
@@ -85,10 +86,10 @@ const AdminLisCategory = ({ history }) => {
                                     {cate.category_id}
                                     {/* <i className="fas fa-info-circle"></i> */}
                             </Button>,
-                categoryName: <Button className="btn-xl" variant="blue" onClick={() => categoryHandler(cate.category_id)}>
-                                    {cate.categoryName}
-                                        {/* <i className="fas fa-info-circle"></i> */}
-                                </Button>,
+                categoryName: cate.categoryName,
+                                // <Button className="btn-xl" variant="blue" onClick={() => categoryHandler(cate.category_id)}>
+                                //     {cate.categoryName}
+                                // </Button>,
                 
                 actions:
                     [

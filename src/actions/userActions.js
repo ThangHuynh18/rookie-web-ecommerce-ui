@@ -9,6 +9,8 @@ import {
 
 } from '../constants/userConstants.js'
 
+import {CART_RESET_ITEM, CART_REMOVE_ITEM} from '../constants/cartConstants'
+
 import { ORDER_MY_LIST_RESET } from '../constants/orderConstants'
 
 import axios from 'axios'
@@ -83,6 +85,8 @@ export const logout = () => (dispatch) => {
     dispatch({ type: USER_DETAILS_RESET })
     dispatch({ type: ORDER_MY_LIST_RESET })
     dispatch({ type: USER_LIST_RESET })
+    //dispatch({ type: CART_REMOVE_ITEM })
+    dispatch({ type: CART_RESET_ITEM })
 
 }
 

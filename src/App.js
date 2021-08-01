@@ -34,6 +34,7 @@ const App = () => {
                 <Container>
                     <Route path='/' component={Home} exact />
                     <Route path='/search/:keyword' component={Home} exact />
+                    <Route path='/admin/search/:keyword' component={AdminListProducts} exact />
                     <Route path='/login' component={Login} />
                     <Route path='/register' component={Register} />
                     <Route path='/profile' component={Profile} />

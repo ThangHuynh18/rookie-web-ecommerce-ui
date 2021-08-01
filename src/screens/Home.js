@@ -17,6 +17,8 @@ const Home = ({match}) => {
     const productList = useSelector(state => state.productList)
     const { loading, error, products, totalItems } = productList
     const [currentPage, setCurrentPage] = useState(1)
+    const [cate, setCate] = useState({id: '', name: ''})
+    const [brand, setBrand] = useState({id: '', name: ''})
     const [cateId, setCateId] = useState('')
     const [brandId, setBrandId] = useState('')
     const [cateName, setCateName] = useState('')
@@ -34,30 +36,32 @@ const Home = ({match}) => {
     const keyword = match.params.keyword
     
     useEffect(() => {
-        dispatch(listCategories())
-        dispatch(listBrands())
-        if(categories){
-            console.log(categories);
-            for (let index = 0; index < categories.length; index++) {
-                if(cateId === categories[index].category_id){
-                    console.log(categories[index].category_id);
-                    return setCateName(categories[index].categoryName)
-                }
-            }
+        if(!categories || !brands) {
+            dispatch(listCategories())
+            dispatch(listBrands())
         }
-        if(brands){
-            console.log(brands);
+        // if(categories){
+        //     console.log(categories);
+        //     for (let index = 0; index < categories.length; index++) {
+        //         if(cateId === categories[index].category_id){
+        //             console.log(categories[index].category_id);
+        //             return setCateName(categories[index].categoryName)
+        //         }
+        //     }
+        // }
+        // if(brands){
+        //     console.log(brands);
 
-            for (let index = 0; index < brands.length; index++) {
-                if(brandId === brands[index].brand_id){
-                    console.log(brands[index].brand_id)
-                    return setBrandName(brands[index].brandName)
-                }
-            }
-        }
+        //     for (let index = 0; index < brands.length; index++) {
+        //         if(brandId === brands[index].brand_id){
+        //             console.log(brands[index].brand_id)
+        //             return setBrandName(brands[index].brandName)
+        //         }
+        //     }
+        // }
             
         
-        dispatch(listProducts(keyword,currentPage, cateId, brandId))
+        dispatch(listProducts(keyword,currentPage, cate.id, brand.id))
         if(category_id){
 
             dispatch(listProductCategories(category_id))
@@ -67,7 +71,7 @@ const Home = ({match}) => {
             dispatch(listProductBrands(brand_id))
         }
        
-    }, [dispatch, keyword, currentPage, brand_id, category_id, cateId, brandId, cateName, brandName])
+    }, [dispatch, keyword, currentPage, brand_id, category_id, cate.id, brand.id, cateName, brandName])
 
     function setCurrentPageNo(pageNumber) {
         
@@ -123,29 +127,49 @@ const Home = ({match}) => {
                         <Col sm={12} md={6} lg={4} xl={3}>
                         <h4>Filters</h4>
                         <h5>Categories</h5>
-                        <>
-                            <p 
-                                onClick={() => setCateId('')}
+                        
+                        <select class="form-select" onChange={(e) => {
+                            setCate({id: e.target.value, name: e.target.options[e.target.selectedIndex].text})
+                        }}>
+                        <option value='' selected>All</option>
+                        {
+                            categories && categories.map(item => (
+                                <option key={item.category_id}  value={item.category_id}>{item.categoryName}</option>
+                            ))
+                        }
+                        </select>
+                            {/* <p 
+                                onClick={() => setCate({id: '', name: ''})}
                                 style={{cursor: 'pointer'}}>All</p>
                             {
                                 categories && categories.map(item => (
-                                    <p key={item.category_id}  onClick={() => setCateId(item.category_id)} style={{cursor: 'pointer'}}>{item.categoryName}</p>
+                                    <p key={item.category_id}  onClick={() => setCate({id: item.category_id, name: item.categoryName})} style={{cursor: 'pointer'}}>{item.categoryName}</p>
                                    
                                 ))
-                            }
-                        </>
+                            } */}
+                        
                         <h5>Brands</h5>
-                        <>
+                        <select class="form-select" onChange={(e) => {
+                            setBrand({id: e.target.value, name: e.target.options[e.target.selectedIndex].text})
+                        }}>
+                        <option value='' selected>All</option>
+                        {
+                            brands && brands.map(item => (
+                                <option key={item.brand_id}  value={item.brand_id}>{item.brandName}</option>
+                            ))
+                        }
+                        </select>
+                        {/* <>
                             <p 
-                                onClick={() => setBrandId('')}  
+                                onClick={() => setBrand({id: '', name: ''})}  
                                 style={{cursor: 'pointer'}}>All</p>
                             {
                                 brands && brands.map(item => (
-                                    <p key={item.brand_id}  onClick={() => setBrandId(item.brand_id)} style={{cursor: 'pointer'}}>{item.brandName}</p>
+                                    <p key={item.brand_id}  onClick={() => setBrand({id: item.brand_id, name: item.brandName})} style={{cursor: 'pointer'}}>{item.brandName}</p>
                                    
                                 ))
                             }
-                        </>
+                        </> */}
                         </Col>
                         <Col sm={12} md={6} lg={4} xl={9}>
                         
@@ -153,8 +177,8 @@ const Home = ({match}) => {
                             loading ? <h5><Loader /></h5> : error ? <h5><Message variant="danger">{error}</Message></h5> :
                             <>
                                 {
-                                    cateId && brandId ? <h5>Filter by: {cateName}, {brandName}</h5>
-                                    : brandId ? <h4>Filter by: {brandName}</h4> : cateId ? <h4>Filter by: {cateName}</h4> 
+                                    cate.id && brand.id ? <h5>Filter by: {cate.name}, {brand.name}</h5>
+                                    : brand.id ? <h4>Filter by: {brand.name}</h4> : cate.id ? <h4>Filter by: {cate.name}</h4> 
                                     : null
                                 }
                                 <Row>
@@ -169,7 +193,7 @@ const Home = ({match}) => {
                                         <div className="product-pagination">
                                             <Pagination
                                                 activePage={currentPage}
-                                                itemsCountPerPage={8}
+                                                itemsCountPerPage={6}
                                                 totalItemsCount={totalItems}
                                                 onChange={setCurrentPageNo}
                                                 nextPageText={'Next'}

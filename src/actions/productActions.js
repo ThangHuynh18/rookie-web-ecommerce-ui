@@ -25,6 +25,7 @@ export const listProducts = (keyword = '', currentPage = 1, cateId, brandId) => 
             url = `/api/products/pagination?page=${currentPage}&brandId=${brandId}`
         }
         if (cateId && brandId) {
+            console.log(`----${cateId}-----${brandId}`)
             url = `/api/products/pagination?page=${currentPage}&cateId=${cateId}&brandId=${brandId}`
         }
         const { data } = await axios.get(url)
