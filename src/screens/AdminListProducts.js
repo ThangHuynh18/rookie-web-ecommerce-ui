@@ -6,7 +6,7 @@ import { Route} from 'react-router-dom'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listProductsAdmin, deleteProduct, createProduct, listProducts,listProductCategories, listProductBrands } from '../actions/productActions.js'
-import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
+import { PRODUCT_CREATE_RESET, PRODUCT_DELETE_RESET } from '../constants/productConstants'
 import { listCategories } from '../actions/categoryActions.js'
 import { listBrands } from '../actions/brandActions.js'
 import { useAlert } from 'react-alert'
@@ -49,6 +49,7 @@ const AdminListProducts = ({ history, match }) => {
 
     useEffect(() => {
         dispatch({ type: PRODUCT_CREATE_RESET })
+        dispatch({ type: PRODUCT_DELETE_RESET })
         
         if (userInfo && userInfo.roles[0] === 'admin') {
             if (successCreate) {

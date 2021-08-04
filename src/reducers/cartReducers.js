@@ -27,7 +27,7 @@ export const cartReducer = (state = { cartItems: [], shippingAddress: {} }, acti
             }
 
         case CART_RESET_ITEM:
-            return {}
+            return {cartItems: [], shippingAddress: {}}
 
         case CART_SAVE_SHIPPING_ADDRESS:
             return {

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listUsers, deleteUser } from '../actions/userActions.js'
+import { USER_CREATE_RESET , USER_DELETE_RESET} from '../constants/userConstants'
 import { useAlert } from 'react-alert'
 import { MDBDataTableV5 } from 'mdbreact'
 
@@ -22,8 +23,10 @@ const AdminListUsers = ({ history }) => {
     const { success: successDelete,  error: errorDelete} = userDelete
 
     useEffect(() => {
+        dispatch({ type: USER_CREATE_RESET })
+        dispatch({ type: USER_DELETE_RESET })
         if (userInfo && userInfo.roles[0] === 'admin') {
-            dispatch(listUsers())
+            dispatch(listUsers()) 
         }
         else {
             history.push('/login')

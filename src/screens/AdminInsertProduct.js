@@ -197,7 +197,7 @@ const AdminInsertProduct = ({ location, history }) => {
                     <Button
                         type="submit"
                         variant="primary"
-                        disabled={name === null || price === 0 || description === null || qty === 0 || category === 0 || brand ===0 || image.url === null}>
+                        disabled={name === null || price <= 0 || description === null || qty <= 0 || category === 0 || brand ===0 || image.url === null}>
                         Insert
                     </Button>
                 </div>

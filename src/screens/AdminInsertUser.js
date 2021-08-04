@@ -19,6 +19,9 @@ const AdminInsertUser = ({ location, history }) => {
 
     const userCreate = useSelector(state => state.userCreate)
     const { loading, error, success: successCreate } = userCreate
+    
+    const userList = useSelector(state => state.userList)
+    const {loading: loadingList, error: errorList, users } = userList
 
     useEffect(() => {
         if (successCreate) {
@@ -34,8 +37,9 @@ const AdminInsertUser = ({ location, history }) => {
             userPassword: password,
        
         }
-        dispatch(createUser(data))
         
+        dispatch(createUser(data))
+                 
     }
 
     return (

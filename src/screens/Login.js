@@ -14,7 +14,7 @@ const Login = ({ location, history }) => {
     const [password, setPassword] = useState('')
 
     const dispatch = useDispatch()
-    const alert = useAlert()
+    // const alert = useAlert()
 
     const userLogin = useSelector(state => state.userLogin)
     const { loading, error, userInfo } = userLogin
@@ -23,7 +23,7 @@ const Login = ({ location, history }) => {
 
     useEffect(() => {
         if (userInfo) {
-            alert.success("Login successfully")
+            // alert.success("Login successfully")
             history.push(redirect)
         }
     }, [history, userInfo, redirect])

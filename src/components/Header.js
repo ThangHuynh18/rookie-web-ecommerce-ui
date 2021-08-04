@@ -52,7 +52,7 @@ const Header = ({history}) => {
           <Navbar.Collapse id="basic-navbar-nav">
             <Route render={({ history }) => <Search history={history} />} />
             <Nav className="ms-auto">
-              <NavDropdown title="Categories" id="basic-nav-dropdown">
+              {/* <NavDropdown title="Categories" id="basic-nav-dropdown">
               {
                 loading ? <h5><Loader /></h5> : error ? <h5><Message variant="danger">{error}</Message></h5> : 
                   categories.map(item => (
@@ -63,7 +63,7 @@ const Header = ({history}) => {
                     </LinkContainer>
                   ))
               }  
-                
+                 </NavDropdown> */}
 
               {/* <NavDropdown.Item href="#action/3.1">Category 1</NavDropdown.Item>    
 
@@ -73,9 +73,9 @@ const Header = ({history}) => {
                 <NavDropdown.Item href="#action/3.1">Category 3.1</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.1">Category 3.2</NavDropdown.Item>
               </NavDropdown> */}
-            </NavDropdown>
+           
 
-            <NavDropdown title="Brands" id="basic-nav-dropdown">
+            {/* <NavDropdown title="Brands" id="basic-nav-dropdown">
             {
                 loadingBrand ? <h5><Loader /></h5> : errorBrand ? <h5><Message variant="danger">{errorBrand}</Message></h5> : 
                 brands.map(item => (
@@ -84,12 +84,12 @@ const Header = ({history}) => {
                   </LinkContainer>
                   ))
             } 
-
+            </NavDropdown> */}
               {/* <NavDropdown.Item href="#action/3.1">A</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item> */}
             
-            </NavDropdown>
+           
               <LinkContainer to="/cart">
                 <Nav.Link>
                   <i class="fas fa-shopping-cart">{cartItems ? cartItems.length : 0}</i> Cart

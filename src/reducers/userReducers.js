@@ -7,7 +7,8 @@ import {
     USER_DELETE_REQUEST, USER_DELETE_SUCCESS, USER_DELETE_FAIL,
     USER_UPDATE_REQUEST, USER_UPDATE_SUCCESS, USER_UPDATE_FAIL, USER_UPDATE_RESET,
     USER_CREATE_REQUEST, USER_CREATE_SUCCESS, USER_CREATE_FAIL,
-    DETAILS_OF_USER_REQUEST, DETAILS_OF_USER_SUCCESS, DETAILS_OF_USER_FAIL, DETAILS_OF_USER_RESET
+    DETAILS_OF_USER_REQUEST, DETAILS_OF_USER_SUCCESS, DETAILS_OF_USER_FAIL, DETAILS_OF_USER_RESET,
+    USER_DELETE_RESET, USER_CREATE_RESET
 } from '../constants/userConstants.js'
 
 export const userLoginReducer = (state = {}, action) => {
@@ -46,6 +47,8 @@ export const userCreateReducer = (state = {}, action) => {
             return { loading: false, success: true, userInfo: action.payload }
         case USER_CREATE_FAIL:
             return { loading: false, error: action.payload }
+        case USER_CREATE_RESET:
+            return {}
         default:
             return state
     }
@@ -117,6 +120,8 @@ export const userDeleteReducer = (state = {}, action) => {
             return { loading: false, success: true }
         case USER_DELETE_FAIL:
             return { loading: false, error: action.payload }
+        case USER_DELETE_RESET:
+            return {}
         default:
             return state
     }
